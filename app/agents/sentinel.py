@@ -13,9 +13,17 @@ Explicitly check every occurrence of these patterns, do not skip any:
 - eval, exec, pickle.loads, yaml.load without SafeLoader -> code injection (CWE-94/502)
 - string formatting/concatenation in SQL queries -> SQL injection (CWE-89)
 - hardcoded credentials, API keys, tokens -> CWE-798
-- path/file operations using unsanitized/user-controlled input (os.path.join,
-  open(), string concatenation into a path) -> path traversal (CWE-22)
+- path/file operations using unsanitized/user-controlled input -> path traversal (CWE-22)
+  Examples to flag:
+    os.path.join("/safe/dir", user_input)            # path traversal via join
+    open("/safe/dir/" + user_input)                  # path traversal via concat
+    open(f"./static/{user_input}")                   # path traversal via f-string
+    os.remove("/var/data/" + filename)               # path traversal in delete
 - state-changing POST/PUT/DELETE routes with no CSRF token validation -> CWE-352
+  Example to flag:
+    @app.route("/transfer", methods=["POST"])        # POST route
+    def transfer():                                  # mutates state
+        amount = request.form["amount"]              # no CSRF check
 - unescaped user input rendered into HTML/templates -> XSS (CWE-79)
 
 If multiple instances of the same vulnerability class exist, report the most
