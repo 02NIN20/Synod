@@ -143,6 +143,23 @@ class TestArbiter:
         deduped = arb._dedup([f1, f2])
         assert len(deduped) == 2
 
+    def test_dedup_threshold_boundary(self):
+        arb = Arbiter(AsyncMock())
+        f1 = Finding(id=str(uuid4()), agent=AgentRole.INSPECTOR,
+                     title="Hardcoded API Key in source code", detail="a",
+                     impact=Severity.HIGH)
+        f2 = Finding(id=str(uuid4()), agent=AgentRole.SENTINEL,
+                     title="Hardcoded API Key detected", detail="b",
+                     impact=Severity.CRITICAL)
+        deduped = arb._dedup([f1, f2])
+        from difflib import SequenceMatcher
+        sim = SequenceMatcher(None, f1.title.lower(), f2.title.lower()).ratio()
+        if sim > 0.75:
+            assert len(deduped) == 1
+            assert AgentRole.SENTINEL in deduped[0].corroborated_by
+        else:
+            assert len(deduped) == 2
+
     def test_validate_evidence_drops_bad_line(self):
         arb = Arbiter(AsyncMock())
         finding = Finding(id=str(uuid4()), agent=AgentRole.INSPECTOR,

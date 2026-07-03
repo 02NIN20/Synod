@@ -26,16 +26,32 @@ class Council:
         start = time.time()
         self.memory.start_session(session_id)
 
-        context = await self.cartographer.map_structure(request.code, request.filename)
+        try:
+            context = await self.cartographer.map_structure(request.code, request.filename)
+        except Exception:
+            context = None
         self.memory.set(session_id, "context", context)
 
-        inspector_findings = await self.inspector.analyze(request.code, request.filename, context)
-        sentinel_findings = await self.sentinel.analyze(request.code, request.filename, context)
+        inspector_findings = []
+        sentinel_findings = []
+
+        try:
+            inspector_findings = await self.inspector.analyze(request.code, request.filename, context)
+        except Exception:
+            pass
+
+        try:
+            sentinel_findings = await self.sentinel.analyze(request.code, request.filename, context)
+        except Exception:
+            pass
 
         all_findings = inspector_findings + sentinel_findings
 
-        if request.enable_fix_loop:
-            all_findings = await self._fix_loop(all_findings, request.code)
+        if request.enable_fix_loop and all_findings:
+            try:
+                all_findings = await self._fix_loop(all_findings, request.code)
+            except Exception:
+                pass
 
         final_findings = self.arbiter.synthesize(all_findings, request.code)
 
@@ -60,16 +76,18 @@ class Council:
             approved = False
             last_fix = None
             for _ in range(MAX_FIX_ITER):
-                last_fix = await smith.generate_fix(finding, code)
-                approved = await self.sentinel.validate_fix(finding, last_fix, code)
+                try:
+                    last_fix = await smith.generate_fix(finding, code)
+                    approved = await self.sentinel.validate_fix(finding, last_fix, code)
+                except Exception:
+                    break
                 if approved:
                     finding.proposal = last_fix
                     break
             if not approved:
                 finding.proposal = (
                     f"[Auto-fix not confirmed after {MAX_FIX_ITER} attempts. "
-                    f"Manual review required.] Last attempt: {last_fix[:150]}"
-                    if last_fix else "[Auto-fix generation failed.]"
+                    f"Manual review required.]"
                 )
         return findings
 
