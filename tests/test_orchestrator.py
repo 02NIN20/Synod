@@ -122,16 +122,15 @@ class TestCouncil:
     async def test_review_with_fix_loop(self, llm_client):
         council = Council(llm_client)
 
-        # Cartographer, inspector, sentinel, then fix loop calls
+        # Cartographer, inspector, sentinel.analyze,
+        # then fix loop: smith.generate_fix + sentinel.validate_fix (× MAX_FIX_ITER)
         llm_client.complete.side_effect = [
             '{"modules": [], "dependencies": {}, "entry_points": [], "notes": ""}',
             '[{"title": "Bad", "detail": "something bad", '
             '"impact": "critical", "line_number": 1}]',
             '[]',
-            # Smith generates a fix
-            'fix: use safer alternative',
-            # Sentinel validates the fix
-            'true',
+            'fix: use safer alternative',  # smith attempt 1
+            'yes',                          # sentinel approves → break
         ]
 
         request = ReviewRequest(code=SAMPLE_CODE, enable_fix_loop=True)

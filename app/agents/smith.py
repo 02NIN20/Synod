@@ -1,23 +1,24 @@
-"""Smith agent: generates fixes for findings."""
+"""Smith agent: generates fixes for high-severity findings."""
 
-from app.agents.base import BaseAgent
-from app.models.schemas import Finding, AgentRole
+from app.models.schemas import Finding
+
+SYSTEM_PROMPT = """You are Smith, a code fix agent.
+Given a finding and the original code, generate a concrete fix.
+Output only the fixed code snippet, no explanation, no markdown fences.
+Keep the fix minimal and focused on the specific finding.
+"""
 
 
-class Smith(BaseAgent):
-    role = AgentRole.SMITH
+class Smith:
+    def __init__(self, llm_client):
+        self.llm = llm_client
 
     async def generate_fix(self, finding: Finding, code: str) -> str:
         prompt = (
-            f"Given this finding:\n{finding.title}\n{finding.detail}\n\n"
-            f"And this code:\n```\n{code}\n```\n\n"
-            f"Generate a fix. Return ONLY the corrected code snippet."
+            f"Finding: {finding.title}\n"
+            f"Detail: {finding.detail}\n"
+            f"Line: {finding.line_number}\n\n"
+            f"Original code:\n```\n{code}\n```\n\n"
+            f"Generate the fixed version of the relevant code section."
         )
-        response = await self.llm.complete(
-            system="You are Smith, a fix generator. Output only the corrected code.",
-            user=prompt,
-        )
-        return response
-
-    async def analyze(self, code, filename=None, context=None):
-        return []
+        return await self.llm.complete(system=SYSTEM_PROMPT, user=prompt)

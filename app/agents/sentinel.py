@@ -54,14 +54,16 @@ class Sentinel(BaseAgent):
                 continue
         return findings
 
-    async def validate_fix(self, finding: Finding, fix: str, code: str) -> bool:
+    async def validate_fix(self, finding: Finding, fix: str, original_code: str) -> bool:
         prompt = (
-            f"Original issue: {finding.title}\n"
+            f"Original finding: {finding.title}\n"
+            f"CWE: {finding.cwe}\n"
+            f"Detail: {finding.detail}\n\n"
             f"Proposed fix:\n```\n{fix}\n```\n\n"
-            f"Does this fix properly address the vulnerability? Answer only 'true' or 'false'."
+            f"Does this fix resolve the vulnerability? Answer only 'yes' or 'no'."
         )
         response = await self.llm.complete(
-            system="You are Sentinel validating a proposed fix. Return only 'true' or 'false'.",
+            system="You are Sentinel, validating a proposed fix. Answer only yes or no.",
             user=prompt,
         )
-        return response.strip().lower() == "true"
+        return response.strip().lower().startswith("yes")
