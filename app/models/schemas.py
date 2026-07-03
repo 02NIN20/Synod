@@ -2,7 +2,7 @@
 
 from enum import Enum
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class Severity(str, Enum):
@@ -54,3 +54,10 @@ class StructureContext(BaseModel):
     dependencies: dict[str, list[str]] = Field(default_factory=dict)
     entry_points: list[str] = Field(default_factory=list)
     notes: str = ""
+
+    @field_validator("modules", mode="before")
+    @classmethod
+    def coerce_modules(cls, v):
+        if not v:
+            return []
+        return [m if isinstance(m, str) else m.get("name", str(m)) for m in v]

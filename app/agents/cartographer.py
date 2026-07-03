@@ -20,7 +20,7 @@ class Cartographer(BaseAgent):
         try:
             data = json.loads(response)
             return StructureContext(**data)
-        except (json.JSONDecodeError, TypeError):
+        except Exception:
             return StructureContext(notes="parse failed, empty context")
 
     async def analyze(self, code, filename=None, context=None) -> list[Finding]:
