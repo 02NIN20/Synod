@@ -55,13 +55,21 @@ class Council:
         smith = Smith(self.llm)
 
         high_severity = [f for f in findings if f.impact in (Severity.HIGH, Severity.CRITICAL)]
+        print(f"[_fix_loop] {len(high_severity)} high/critical findings", flush=True)
         for finding in high_severity:
-            for _ in range(MAX_FIX_ITER):
+            print(f"[_fix_loop] BEFORE: id={finding.id}, title={finding.title!r}, "
+                  f"impact={finding.impact}, proposal_len={len(finding.proposal or '')}", flush=True)
+            for i in range(MAX_FIX_ITER):
                 fix = await smith.generate_fix(finding, code)
                 approved = await self.sentinel.validate_fix(finding, fix, code)
+                print(f"[_fix_loop]   iter={i}, fix_len={len(fix)}, approved={approved}", flush=True)
                 if approved:
                     finding.proposal = fix
+                    print(f"[_fix_loop]   proposal OVERWRITTEN (len={len(fix)})", flush=True)
                     break
+            else:
+                print(f"[_fix_loop]   proposal NOT overwritten after {MAX_FIX_ITER} iters", flush=True)
+            print(f"[_fix_loop] AFTER: proposal_len={len(finding.proposal or '')}", flush=True)
         return findings
 
     def _build_summary(self, findings: list[Finding]) -> str:
