@@ -33,10 +33,11 @@ class Council:
         sentinel_findings = await self.sentinel.analyze(request.code, request.filename, context)
 
         all_findings = inspector_findings + sentinel_findings
-        final_findings = self.arbiter.synthesize(all_findings, request.code)
 
         if request.enable_fix_loop:
-            final_findings = await self._fix_loop(final_findings, request.code)
+            all_findings = await self._fix_loop(all_findings, request.code)
+
+        final_findings = self.arbiter.synthesize(all_findings, request.code)
 
         summary = self._build_summary(final_findings)
         elapsed = time.time() - start
@@ -55,21 +56,21 @@ class Council:
         smith = Smith(self.llm)
 
         high_severity = [f for f in findings if f.impact in (Severity.HIGH, Severity.CRITICAL)]
-        print(f"[_fix_loop] {len(high_severity)} high/critical findings", flush=True)
         for finding in high_severity:
-            print(f"[_fix_loop] BEFORE: id={finding.id}, title={finding.title!r}, "
-                  f"impact={finding.impact}, proposal_len={len(finding.proposal or '')}", flush=True)
-            for i in range(MAX_FIX_ITER):
-                fix = await smith.generate_fix(finding, code)
-                approved = await self.sentinel.validate_fix(finding, fix, code)
-                print(f"[_fix_loop]   iter={i}, fix_len={len(fix)}, approved={approved}", flush=True)
+            approved = False
+            last_fix = None
+            for _ in range(MAX_FIX_ITER):
+                last_fix = await smith.generate_fix(finding, code)
+                approved = await self.sentinel.validate_fix(finding, last_fix, code)
                 if approved:
-                    finding.proposal = fix
-                    print(f"[_fix_loop]   proposal OVERWRITTEN (len={len(fix)})", flush=True)
+                    finding.proposal = last_fix
                     break
-            else:
-                print(f"[_fix_loop]   proposal NOT overwritten after {MAX_FIX_ITER} iters", flush=True)
-            print(f"[_fix_loop] AFTER: proposal_len={len(finding.proposal or '')}", flush=True)
+            if not approved:
+                finding.proposal = (
+                    f"[Auto-fix not confirmed after {MAX_FIX_ITER} attempts. "
+                    f"Manual review required.] Last attempt: {last_fix[:150]}"
+                    if last_fix else "[Auto-fix generation failed.]"
+                )
         return findings
 
     def _build_summary(self, findings: list[Finding]) -> str:

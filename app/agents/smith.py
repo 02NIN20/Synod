@@ -4,8 +4,13 @@ from app.models.schemas import Finding
 
 SYSTEM_PROMPT = """You are Smith, a code fix agent.
 Given a finding and the original code, generate a concrete fix.
-Output only the fixed code snippet, no explanation, no markdown fences.
-Keep the fix minimal and focused on the specific finding.
+
+STRICT rules:
+- Output ONLY the changed lines/function, never the full file.
+- Max 15 lines of code.
+- No explanation, no markdown fences, no comments beyond what already existed.
+- If the fix needs more than 15 lines, output just the core change and note
+  "(apply the same change elsewhere)" instead of repeating code.
 """
 
 
