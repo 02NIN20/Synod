@@ -77,3 +77,14 @@ pytest tests/ -v
 - CWE-22 (path traversal) is undetected — the model does not recognize it reliably even with explicit examples.
 - CWE-352 (CSRF) detection is inconsistent (≈67% recall) due to LLM sampling variance.
 - Results are stochastic; individual runs may vary, especially with 5-finding caps per agent.
+
+## Extensibility
+
+Synod is designed for horizontal agent expansion:
+
+- **New agents**: subclass `BaseAgent` in `app/agents/`, implement `analyze()`, add the role to `AgentRole` enum, and register it in `Council.review()`. No other wiring needed.
+- **New languages**: pass `language` in `ReviewRequest`. Agents receive it in context; the prompt can be adapted per language.
+- **New vulnerability classes**: add the CWE pattern to Sentinel's `SYSTEM_PROMPT`. No code changes required.
+- **Arbiter rules**: replace or compose `Arbiter` strategies (e.g., weighted voting, confidence thresholds) by implementing the same interface.
+- **LLM backends**: swap `QwenClient` for any OpenAI-compatible provider by implementing the same `complete(system, user) -> str` contract.
+- **The fix loop** is opt-in (`enable_fix_loop`); it can be disabled entirely, run on a subset of severities, or extended to multi-round negotiation between Smith and Sentinel.
