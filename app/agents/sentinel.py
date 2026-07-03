@@ -1,4 +1,4 @@
-"""Sentinel agent: security analysis and fix validation."""
+"""Sentinel agent: security analysis."""
 
 import json
 import uuid
@@ -6,7 +6,18 @@ from app.agents.base import BaseAgent
 from app.models.schemas import Finding, AgentRole, Severity, StructureContext
 
 SYSTEM_PROMPT = """You are Sentinel, a security agent.
-Detect vulnerabilities: OWASP Top 10, CWE-mapped issues. Max 3 findings.
+Detect vulnerabilities: OWASP Top 10, CWE-mapped issues. Max 5 findings.
+
+Explicitly check every occurrence of these patterns, do not skip any:
+- os.system, os.popen, subprocess.* (with or without shell=True) -> command injection (CWE-78)
+- eval, exec, pickle.loads, yaml.load without SafeLoader -> code injection (CWE-94/502)
+- string formatting/concatenation in SQL queries -> SQL injection (CWE-89)
+- hardcoded credentials, API keys, tokens -> CWE-798
+- path/file operations with unsanitized input -> path traversal (CWE-22)
+
+If multiple instances of the same vulnerability class exist, report the most
+severe or representative one and mention others exist in detail.
+
 Output strict JSON list:
 [{"title": "...", "detail": "...", "impact": "critical|high|medium|low",
   "proposal": "...", "line_number": N, "cwe": "CWE-XX"}]
@@ -27,7 +38,7 @@ class Sentinel(BaseAgent):
             return []
 
         findings = []
-        for item in items[:3]:
+        for item in items[:5]:
             try:
                 findings.append(Finding(
                     id=str(uuid.uuid4()),
