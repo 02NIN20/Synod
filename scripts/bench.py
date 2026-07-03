@@ -172,31 +172,25 @@ async def run_bench():
 
     # Category averages (macro)
     for cat in ("security", "quality"):
-        cat_rows = [r for f, r in zip(sorted(GROUND_TRUTH.keys()), rows)
-                    if f in results and GROUND_TRUTH[f]["category"] == cat]
-        if cat_rows:
+        cat_files = [fn for fn in results if fn in GROUND_TRUTH and GROUND_TRUTH[fn]["category"] == cat]
+        if cat_files:
             print("-" * 90)
-            all_p = [runs[fn]["precision"] for fn, runs in results.items()
-                     if fn in GROUND_TRUTH and GROUND_TRUTH[fn]["category"] == cat]
-            all_r = [runs[fn]["recall"] for fn, runs in results.items()
-                     if fn in GROUND_TRUTH and GROUND_TRUTH[fn]["category"] == cat]
-            all_f = [runs[fn]["f1"] for fn, runs in results.items()
-                     if fn in GROUND_TRUTH and GROUND_TRUTH[fn]["category"] == cat]
-
-            flat_p = [v for run in all_p for v in ([run] if isinstance(run, (int, float)) else run)]
-            flat_r = [v for run in all_r for v in ([run] if isinstance(run, (int, float)) else run)]
-            flat_f = [v for run in all_f for v in ([run] if isinstance(run, (int, float)) else run)]
+            flat_p = []
+            flat_r = []
+            flat_f = []
+            all_tokens = []
+            all_times = []
+            for fn in cat_files:
+                for run in results[fn]:
+                    flat_p.append(run["precision"])
+                    flat_r.append(run["recall"])
+                    flat_f.append(run["f1"])
+                    all_tokens.append(run["tokens"])
+                    all_times.append(run["time_s"])
 
             p_m, p_s = mean_std(flat_p)
             r_m, r_s = mean_std(flat_r)
             f_m, f_s = mean_std(flat_f)
-
-            all_tokens = [r["tokens"] for fn, runs in results.items()
-                          if fn in GROUND_TRUTH and GROUND_TRUTH[fn]["category"] == cat
-                          for r in runs]
-            all_times = [r["time_s"] for fn, runs in results.items()
-                         if fn in GROUND_TRUTH and GROUND_TRUTH[fn]["category"] == cat
-                         for r in runs]
             avg_tok = sum(all_tokens) / len(all_tokens)
             avg_tim = sum(all_times) / len(all_times)
 
