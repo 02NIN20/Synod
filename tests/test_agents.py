@@ -74,16 +74,18 @@ class TestInspector:
         findings = await ins.analyze(SAMPLE_CODE)
         assert findings == []
 
-    async def test_analyze_limits_to_3(self, llm_client):
+    async def test_analyze_limits_to_5(self, llm_client):
         llm_client.complete.return_value = (
             '[{"title": "A", "detail": "d", "impact": "low"}, '
             '{"title": "B", "detail": "d", "impact": "low"}, '
             '{"title": "C", "detail": "d", "impact": "low"}, '
-            '{"title": "D", "detail": "d", "impact": "low"}]'
+            '{"title": "D", "detail": "d", "impact": "low"}, '
+            '{"title": "E", "detail": "d", "impact": "low"}, '
+            '{"title": "F", "detail": "d", "impact": "low"}]'
         )
         ins = Inspector(llm_client)
         findings = await ins.analyze(SAMPLE_CODE)
-        assert len(findings) == 3
+        assert len(findings) == 5
 
     async def test_analyze_skips_malformed_items(self, llm_client):
         llm_client.complete.return_value = (

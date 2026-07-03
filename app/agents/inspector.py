@@ -7,7 +7,7 @@ from app.models.schemas import Finding, AgentRole, Severity, StructureContext
 
 SYSTEM_PROMPT = """You are Inspector, a code quality agent.
 Detect anti-patterns, complexity issues, maintainability problems.
-Do not assess security. Max 3 findings.
+Do not assess security. Max 5 findings.
 Output strict JSON list:
 [{"title": "...", "detail": "...", "impact": "critical|high|medium|low",
   "proposal": "...", "line_number": N}]
@@ -28,7 +28,7 @@ class Inspector(BaseAgent):
             return []
 
         findings = []
-        for item in items[:3]:
+        for item in items[:5]:
             try:
                 findings.append(Finding(
                     id=str(uuid.uuid4()),
