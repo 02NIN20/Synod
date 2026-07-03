@@ -13,10 +13,17 @@ Explicitly check every occurrence of these patterns, do not skip any:
 - eval, exec, pickle.loads, yaml.load without SafeLoader -> code injection (CWE-94/502)
 - string formatting/concatenation in SQL queries -> SQL injection (CWE-89)
 - hardcoded credentials, API keys, tokens -> CWE-798
-- path/file operations with unsanitized input -> path traversal (CWE-22)
+- path/file operations using unsanitized/user-controlled input (os.path.join,
+  open(), string concatenation into a path) -> path traversal (CWE-22)
+- state-changing POST/PUT/DELETE routes with no CSRF token validation -> CWE-352
+- unescaped user input rendered into HTML/templates -> XSS (CWE-79)
 
 If multiple instances of the same vulnerability class exist, report the most
 severe or representative one and mention others exist in detail.
+
+Only report findings you are confident about. If a pattern is ambiguous or
+you are not certain it is exploitable, do not report it. Do not flag
+architecture, coupling, or style issues — that is out of scope.
 
 Output strict JSON list:
 [{"title": "...", "detail": "...", "impact": "critical|high|medium|low",
