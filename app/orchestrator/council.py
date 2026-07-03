@@ -33,11 +33,10 @@ class Council:
         sentinel_findings = await self.sentinel.analyze(request.code, request.filename, context)
 
         all_findings = inspector_findings + sentinel_findings
+        final_findings = self.arbiter.synthesize(all_findings, request.code)
 
         if request.enable_fix_loop:
-            all_findings = await self._fix_loop(all_findings, request.code)
-
-        final_findings = self.arbiter.synthesize(all_findings, request.code)
+            final_findings = await self._fix_loop(final_findings, request.code)
 
         summary = self._build_summary(final_findings)
         elapsed = time.time() - start
