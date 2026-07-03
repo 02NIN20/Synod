@@ -129,7 +129,7 @@ async def run_bench():
             runs.append(run_data)
             print(
                 f"  run {run_idx+1}: P={precision:.1%} R={recall:.1%} "
-                f"F1={f1:.1%} tok={response.tokens_used} t={response.time_s:.1f}s "
+                f"F1={f1:.1%} tok={response.tokens_used} t={response.time_seconds:.1f}s "
                 f"FP={sorted(fp_set)} FN={sorted(fn_set)}"
             )
 
