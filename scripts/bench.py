@@ -84,14 +84,13 @@ async def run_bench():
     print(f"Total time: {total_time:.1f}s")
     print(f"Average F1: {avg_f1:.1%}")
 
-    output_path = os.path.join(os.path.dirname(__file__), "..", "docs", "benchmark_results.json")
-    with open(output_path, "w") as f:
-        json.dump({"results": results, "summary": {
-            "total_tokens": total_tokens,
-            "total_time_s": round(total_time, 2),
-            "avg_f1": round(avg_f1, 3),
-        }}, f, indent=2)
-    print(f"\nResults written to {output_path}")
+    bench_data = {"results": results, "summary": {
+        "total_tokens": total_tokens,
+        "total_time_s": round(total_time, 2),
+        "avg_f1": round(avg_f1, 3),
+    }}
+    print("\n--- Full results ---")
+    print(json.dumps(bench_data, indent=2))
 
 
 if __name__ == "__main__":
