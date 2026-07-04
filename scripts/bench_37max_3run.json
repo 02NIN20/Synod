@@ -1,0 +1,299 @@
+{
+  "coupling_sample.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 3410,
+      "time_s": 164.5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [],
+      "errors": []
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 4998,
+      "time_s": 200.7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 8429,
+      "time_s": 134.8,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [],
+      "errors": []
+    }
+  ],
+  "csrf_missing.py": [
+    {
+      "run": 1,
+      "total_findings": 1,
+      "tokens": 11966,
+      "time_s": 142.2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [
+        "CWE-352"
+      ],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 2,
+      "total_findings": 1,
+      "tokens": 15823,
+      "time_s": 147.5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [
+        "CWE-352"
+      ],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 3,
+      "total_findings": 1,
+      "tokens": 18973,
+      "time_s": 165.2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [
+        "CWE-352"
+      ],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    }
+  ],
+  "insecure_deserialize.py": [
+    {
+      "run": 1,
+      "total_findings": 1,
+      "tokens": 22210,
+      "time_s": 140.7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [
+        "CWE-502"
+      ],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 2,
+      "total_findings": 1,
+      "tokens": 25337,
+      "time_s": 169.5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [
+        "CWE-502"
+      ],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 3,
+      "total_findings": 1,
+      "tokens": 28817,
+      "time_s": 145.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [
+        "CWE-502"
+      ],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    }
+  ],
+  "path_traversal.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 30425,
+      "time_s": 244.1,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": [],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+        "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 2,
+      "total_findings": 4,
+      "tokens": 33724,
+      "time_s": 179.6,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": [],
+      "errors": [
+        "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 35233,
+      "time_s": 212.1,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": [],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+        "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    }
+  ],
+  "quality_sample.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 41753,
+      "time_s": 157.2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [],
+      "errors": []
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 45741,
+      "time_s": 160.1,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [],
+      "errors": []
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 52008,
+      "time_s": 61.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [],
+      "errors": []
+    }
+  ],
+  "vulnerable_code.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 53826,
+      "time_s": 274.8,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": [],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+        "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 55713,
+      "time_s": 245.0,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": [],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+        "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 57693,
+      "time_s": 215.4,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": [],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+        "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    }
+  ],
+  "xss_app.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 57693,
+      "time_s": 279.3,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": [],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+        "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 59351,
+      "time_s": 212.6,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": [],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+        "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 60585,
+      "time_s": 205.5,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": [],
+      "errors": [
+        "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+        "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+      ]
+    }
+  ]
+}
