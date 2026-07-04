@@ -58,7 +58,7 @@ docker compose up -d --build
 |------|------------|-------------|
 | `--fix` | review, scan | Enable fix loop (Smith + Sentinel validation) |
 | `--show-code` | review | Print the source code before review |
-| `--url` | all | API base URL (default: `http://47.84.227.185:8000`) |
+| `--url` | all | API base URL (default: `http://localhost:8000`) |
 | `--ext` | scan | File extension filter (default: `.py`) |
 | `--limit` | scan | Max files to scan (0 = unlimited) |
 | `--yes` | scan | Skip confirmation prompt |
@@ -135,7 +135,7 @@ Otherwise, it replies directly via Qwen LLM with conversation `history` for cont
 | LLM | Qwen Cloud — `qwen3-coder-plus-2025-07-22` |
 | CLI | Typer + Rich + httpx |
 | Container | Docker, docker-compose |
-| Deployment | ECS (47.84.227.185) |
+| Deployment | ECS |
 
 ## Roadmap
 
