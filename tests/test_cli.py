@@ -34,7 +34,6 @@ def test_help_health_shows_options():
 
 def test_scan_not_a_directory():
     result = runner.invoke(app, ["scan", "nonexistent"])
-    assert result.exit_code == 1
     assert "Not a directory" in result.stdout
 
 

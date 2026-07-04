@@ -80,7 +80,9 @@ async def chat(request: ChatRequest):
     else:
         client = QwenClient()
         try:
-            reply = await client.complete(system=CHAT_SYSTEM_PROMPT, user=request.message)
+            reply = await client.complete_with_history(
+                system=CHAT_SYSTEM_PROMPT, history=request.history, user=request.message
+            )
             elapsed = time.time() - start
             return ChatResponse(
                 reply=reply,

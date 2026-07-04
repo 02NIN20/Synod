@@ -59,6 +59,7 @@ class StructureContext(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
+    history: list[dict] = Field(default_factory=list)
 
 
 class ChatResponse(BaseModel):

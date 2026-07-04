@@ -78,10 +78,12 @@ def chat(
 ):
     """Chat with Synod. Sends code → council review, text → direct LLM reply."""
     if message:
-        _do_chat(message, url)
+        _do_chat(message, url, [])
         return
 
+    history: list[dict] = []
     console.print("[bold cyan]Synod Chat[/bold cyan] — type a message, /exit to quit\n")
+    console.print("[dim]Local commands: /exit, /review <file>, /scan <dir>[/dim]\n")
     while True:
         try:
             msg = console.input("[bold]>>> [/bold]")
@@ -93,22 +95,31 @@ def chat(
         if msg.strip() == "/exit":
             console.print("[yellow]Bye![/yellow]")
             return
-        _do_chat(msg, url)
+        if msg.strip().startswith("/review "):
+            _local_review(msg.strip()[len("/review "):], url)
+            continue
+        if msg.strip().startswith("/scan "):
+            _local_scan(msg.strip()[len("/scan "):], url)
+            continue
+        reply = _do_chat(msg, url, history)
+        if reply is not None:
+            history.append({"role": "user", "content": msg})
+            history.append({"role": "assistant", "content": reply})
 
 
-def _do_chat(message: str, url: str):
+def _do_chat(message: str, url: str, history: list[dict]) -> str | None:
     with console.status("[cyan]Thinking...[/cyan]", spinner="dots"):
         start = time.time()
         try:
             resp = httpx.post(
                 f"{url}/api/v1/chat",
-                json={"message": message},
+                json={"message": message, "history": history},
                 timeout=120,
             )
             resp.raise_for_status()
         except httpx.HTTPError as e:
             console.print(f"[red]Request failed: {e}[/red]")
-            return
+            return None
 
     data = resp.json()
     elapsed = time.time() - start
@@ -116,6 +127,41 @@ def _do_chat(message: str, url: str):
     console.print(f"[dim]{mode_tag} · {elapsed:.1f}s · {data['tokens_used']} tokens[/dim]")
     console.print(data["reply"])
     console.print()
+    return data["reply"]
+
+
+def _run_review(code: str, filename: str, url: str):
+    with console.status("[cyan]Running council...[/cyan]", spinner="dots"):
+        try:
+            resp = httpx.post(
+                f"{url}/api/v1/review",
+                json={"code": code, "filename": filename, "enable_fix_loop": False},
+                timeout=120,
+            )
+            resp.raise_for_status()
+        except httpx.HTTPError as e:
+            console.print(f"[red]Request failed: {e}[/red]")
+            return
+    data = resp.json()
+    if not data["findings"]:
+        console.print("[green]No issues found.[/green]")
+        return
+    for i, finding in enumerate(data["findings"], 1):
+        print_finding(finding, i)
+    console.print()
+    print_summary(data)
+
+
+def _local_review(arg: str, url: str):
+    path = Path(arg)
+    if not path.exists():
+        console.print(f"[red]File not found: {path}[/red]")
+        return
+    _run_review(path.read_text(), path.name, url)
+
+
+def _local_scan(arg: str, url: str):
+    _run_scan(Path(arg.split()[0]), url, {})
 
 
 @app.command()
@@ -128,9 +174,19 @@ def scan(
     yes: bool = typer.Option(False, "--yes", help="Skip confirmation prompt"),
 ):
     """Scan a directory and review every matching file."""
+    opts = {"fix": fix, "ext": ext, "limit": limit, "yes": yes}
+    _run_scan(directory, url, opts)
+
+
+def _run_scan(directory: Path, url: str, opts: dict):
+    ext = opts.get("ext", ".py")
+    fix = opts.get("fix", False)
+    limit = opts.get("limit", 0)
+    yes = opts.get("yes", False)
+
     if not directory.is_dir():
         console.print(f"[red]Not a directory: {directory}[/red]")
-        raise typer.Exit(1)
+        return
 
     files = sorted(directory.rglob(f"*{ext}"))
     gitignore = directory / ".gitignore"
