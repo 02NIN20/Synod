@@ -97,6 +97,17 @@ Inside `./synod chat`:
 - CWE-352 (CSRF): ≈0.667 recall — inconsistent across runs due to LLM sampling variance.
 - Results are stochastic; individual runs may vary.
 
+### Model comparison (single run on `vulnerable_code.py`)
+
+| Model | Findings | Critical | High | Tokens | Time (s) |
+|-------|----------|----------|------|--------|----------|
+| qwen3-coder-plus-2025-07-22 | 8 | 3 | 4 | 2638 | 21.8 |
+| qwen3.5-plus-2026-04-20 | 8 | 4 | 4 | 2913 | 23.0 |
+| qwen3.7-plus-2026-05-26 | **9** | **7** | 2 | 2556 | **18.9** |
+| qwen3.7-max-2026-05-20 | 8 | 5 | 3 | 2619 | **14.9** |
+
+3.7-max is the fastest; 3.7-plus finds the most issues (9) including 7 critical.
+
 ## API Reference
 
 | Endpoint | Method | Description |

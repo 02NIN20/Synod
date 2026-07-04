@@ -39,6 +39,8 @@ g.node("arbiter", "Arbiter\ndedup + consensus + evidence check",
 g.node("mem", "Working Memory\n(in-memory dict)", fillcolor="#1c1c28")
 g.node("report", "Report\nFinding / Detail / Impact / Proposal",
        shape="oval", fillcolor="#1c1c28")
+g.node("qwen", "Qwen Cloud API\n(OpenAI-compatible, coder-optimized model)",
+       shape="cylinder", fillcolor="#2a3a5a", fontcolor="#f0f0f5")
 
 g.edge("user", "orch")
 g.edge("orch", "cartographer")
@@ -53,6 +55,10 @@ g.edge("sentinel2", "arbiter")
 g.edge("gate", "arbiter", label="no")
 g.edge("orch", "mem", style="dotted")
 g.edge("arbiter", "report")
+g.edge("cartographer", "qwen", style="dashed", constraint="false")
+g.edge("inspector", "qwen", style="dashed", constraint="false")
+g.edge("sentinel", "qwen", style="dashed", constraint="false")
+g.edge("smith", "qwen", style="dashed", constraint="false")
 
 g.render("docs/architecture", cleanup=True)
 print("done")
