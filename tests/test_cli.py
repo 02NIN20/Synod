@@ -30,3 +30,23 @@ def test_help_health_shows_options():
     result = runner.invoke(app, ["health", "--help"])
     assert result.exit_code == 0
     assert "--url" in result.stdout
+
+
+def test_scan_not_a_directory():
+    result = runner.invoke(app, ["scan", "nonexistent"])
+    assert result.exit_code == 1
+    assert "Not a directory" in result.stdout
+
+
+def test_help_chat_shows_options():
+    result = runner.invoke(app, ["chat", "--help"])
+    assert result.exit_code == 0
+    assert "MESSAGE" in result.stdout
+
+
+def test_help_scan_shows_options():
+    result = runner.invoke(app, ["scan", "--help"])
+    assert result.exit_code == 0
+    assert "DIRECTORY" in result.stdout
+    assert "--ext" in result.stdout
+    assert "--fix" in result.stdout

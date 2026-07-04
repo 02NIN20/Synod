@@ -124,6 +124,8 @@ def scan(
     url: str = typer.Option(DEFAULT_URL, help="Synod API base URL"),
     fix: bool = typer.Option(False, "--fix", help="Enable fix loop"),
     ext: str = typer.Option(".py", "--ext", help="File extension filter (e.g. .py, .js)"),
+    limit: int = typer.Option(0, "--limit", help="Max files to scan (0 = unlimited)"),
+    yes: bool = typer.Option(False, "--yes", help="Skip confirmation prompt"),
 ):
     """Scan a directory and review every matching file."""
     if not directory.is_dir():
@@ -142,11 +144,27 @@ def scan(
 
     files = [f for f in files if not any(p in f.parts for p in skip_dirs)]
 
+    if limit and len(files) > limit:
+        files = files[:limit]
+
     if not files:
         console.print(f"[yellow]No {ext} files found in {directory}[/yellow]")
         return
 
-    console.print(f"[bold]Scanning {len(files)} {ext} files in {directory}...[/bold]\n")
+    est_time = len(files) * 16
+    est_tokens = len(files) * 3000
+    console.print(f"[bold]Scanning {len(files)} {ext} files in {directory}...[/bold]")
+    console.print(f"[dim]  Est. time: ~{est_time}s · Est. tokens: ~{est_tokens}[/dim]")
+    if len(files) > 5 and not yes:
+        try:
+            ok = console.input("[yellow]  Continue? [Y/n]: [/yellow]")
+        except (EOFError, KeyboardInterrupt):
+            console.print("\n[yellow]Aborted[/yellow]")
+            return
+        if ok.strip().lower() not in ("", "y", "yes"):
+            console.print("[yellow]Aborted[/yellow]")
+            return
+    console.print()
 
     total_findings = 0
     total_tokens = 0

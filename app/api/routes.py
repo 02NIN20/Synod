@@ -26,11 +26,13 @@ def _looks_like_code(text: str) -> bool:
     if re.search(r"```\w*", stripped):
         return True
     lines = [l for l in stripped.split("\n") if l.strip()]
-    code_keywords = {"def ", "class ", "import ", "from ", "return ", "if ", "for ", "while ", "=", ":", ")"}
+    strong_start = ("def ", "class ", "import ", "from ", "async def", "@")
+    for l in lines:
+        if any(l.startswith(s) for s in strong_start):
+            return True
+    code_keywords = {"def ", "class ", "import ", "from ", "return ", "if ", "for ", "while "}
     code_lines = sum(1 for l in lines if any(kw in l for kw in code_keywords))
-    if len(lines) <= 3 and code_lines >= 1:
-        return True
-    if code_lines >= 3:
+    if len(lines) > 3 and code_lines >= 3:
         return True
     return False
 
