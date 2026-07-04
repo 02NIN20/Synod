@@ -30,6 +30,8 @@ def _looks_like_code(text: str) -> bool:
     for l in lines:
         if any(l.startswith(s) for s in strong_start):
             return True
+        if re.search(r'\bdef\s+\w+\s*\(', l) or re.search(r'\bclass\s+\w+\s*:', l):
+            return True
     code_keywords = {"def ", "class ", "import ", "from ", "return ", "if ", "for ", "while "}
     code_lines = sum(1 for l in lines if any(kw in l for kw in code_keywords))
     if len(lines) > 3 and code_lines >= 3:
