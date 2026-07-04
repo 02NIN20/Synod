@@ -3,9 +3,14 @@
 Multi-agent code review council, powered by Qwen LLM.  
 **Cartographer** maps structure → **Inspector** + **Sentinel** analyze → **Arbiter** deduplicates → **Smith** (optional) generates fixes.
 
+> **Note:** Synod is not an MCP server. It exposes a standard REST API
+> (FastAPI). MCP integration is a possible future wrapper, not implemented.
+
 ## Architecture
 
-![Synod Architecture](docs/architecture.png)
+<p align="center">
+  <img src="docs/architecture.png" alt="Synod architecture" width="700">
+</p>
 
 ## How It Works
 
