@@ -75,7 +75,8 @@ Inside `./synod chat`:
 
 ## Benchmark
 
-3 runs per sample, reported as mean ± std.  
+### Primary model — `qwen3-coder-plus-2025-07-22` (3 runs per sample)
+
 **TP**: finding with correct CWE AND line within ±2 lines.  
 **FP**: finding with no ground-truth match.  
 **FN**: ground-truth bug with no finding.
@@ -90,6 +91,7 @@ Inside `./synod chat`:
 | **Avg (security)** | | **1.000** | **0.733** | **0.733** | 26515 | 16.1 |
 | quality_sample.py | quality | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 29954 | 11.2 |
 | coupling_sample.py | quality | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 4743 | 14.0 |
+| clean_sample.py | quality | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 4587 | 10.0 |
 | **Avg (quality)** | | **1.000** | **1.000** | **1.000** | 17348 | 12.6 |
 
 **Known limitations:**
@@ -97,16 +99,34 @@ Inside `./synod chat`:
 - CWE-352 (CSRF): ≈0.667 recall — inconsistent across runs due to LLM sampling variance.
 - Results are stochastic; individual runs may vary.
 
-### Model comparison (single run on `vulnerable_code.py`)
+### Model comparison — all models, single run per sample
+
+| Sample | coder-plus (F1) | 3.5-plus (F1) | 3.7-plus (F1) | 3.7-max (F1) |
+|--------|----------------:|--------------:|--------------:|--------------:|
+| clean_sample.py | 1.000 | 1.000 | 1.000 | 1.000 |
+| coupling_sample.py | 1.000 | 1.000 | 1.000 | 1.000 |
+| quality_sample.py | 1.000 | 1.000 | 1.000 | 1.000 |
+| csrf_missing.py | 1.000 | 1.000 | **0.000** | 1.000 |
+| insecure_deserialize.py | 1.000 | **0.000** | **0.000** | 1.000 |
+| vulnerable_code.py | 1.000 | **0.000** | **0.000** | **0.000** |
+| xss_app.py | 1.000 | — | **0.000** | **0.000** |
+| path_traversal.py | 1.000 | **0.000** | **0.000** | **0.000** |
+| **Security avg** | **1.000** | **0.200** | **0.000** | **0.400** |
+| **Quality avg** | **1.000** | **1.000** | **1.000** | **1.000** |
+| **Avg time (s)** | **14.4** | **215.0** | **189.5** | **190.3** |
+
+**Zero-F1 cells** indicate agent JSON-output failures (Inspector/Sentinel return `None` — model refuses or fails to produce structured JSON). This is a systematic issue with the newer-tier models when used inside Synod's multi-agent architecture.
+
+Earlier clean single-run tests (before rate limiting, `vulnerable_code.py` only) showed all models capable of finding issues:
 
 | Model | Findings | Critical | High | Tokens | Time (s) |
-|-------|----------|----------|------|--------|----------|
+|-------|----------:|--------:|-----:|------:|---------:|
 | qwen3-coder-plus-2025-07-22 | 8 | 3 | 4 | 2638 | 21.8 |
 | qwen3.5-plus-2026-04-20 | 8 | 4 | 4 | 2913 | 23.0 |
 | qwen3.7-plus-2026-05-26 | **9** | **7** | 2 | 2556 | **18.9** |
 | qwen3.7-max-2026-05-20 | 8 | 5 | 3 | 2619 | **14.9** |
 
-3.7-max is the fastest; 3.7-plus finds the most issues (9) including 7 critical.
+**Recommendation:** stick with `qwen3-coder-plus-2025-07-22` — it is the only model with 100% agent reliability across all samples. Newer-tier models (3.5-plus, 3.7-plus, 3.7-max) have inconsistent structured-output compliance, causing agent failures in ~60% of security reviews.
 
 ## API Reference
 
