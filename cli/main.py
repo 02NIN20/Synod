@@ -71,6 +71,9 @@ def health(url: str = typer.Option(DEFAULT_URL, help="Synod API base URL")):
         raise typer.Exit(1)
 
 
+MAX_HISTORY = 20
+
+
 @app.command()
 def chat(
     message: str = typer.Argument("", help="Message to send (omit for interactive mode)"),
@@ -105,6 +108,8 @@ def chat(
         if reply is not None:
             history.append({"role": "user", "content": msg})
             history.append({"role": "assistant", "content": reply})
+            if len(history) > MAX_HISTORY * 2:
+                history = history[-(MAX_HISTORY * 2):]
 
 
 def _do_chat(message: str, url: str, history: list[dict]) -> str | None:
@@ -161,7 +166,15 @@ def _local_review(arg: str, url: str):
 
 
 def _local_scan(arg: str, url: str):
-    _run_scan(Path(arg.split()[0]), url, {})
+    parts = arg.split()
+    path = Path(parts[0])
+    opts = {"yes": "--yes" in parts, "fix": "--fix" in parts}
+    for i, p in enumerate(parts):
+        if p == "--ext" and i + 1 < len(parts):
+            opts["ext"] = parts[i + 1]
+        if p == "--limit" and i + 1 < len(parts):
+            opts["limit"] = int(parts[i + 1])
+    _run_scan(path, url, opts)
 
 
 @app.command()
