@@ -55,3 +55,15 @@ class StructureContext(BaseModel):
     dependencies: dict[str, list[str]] = Field(default_factory=dict)
     entry_points: list[str] = Field(default_factory=list)
     notes: str = ""
+
+
+class ChatRequest(BaseModel):
+    message: str
+
+
+class ChatResponse(BaseModel):
+    reply: str
+    mode: str = "direct"
+    tokens_used: int = 0
+    time_seconds: float = 0.0
+    findings_count: int = 0
