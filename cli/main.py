@@ -99,10 +99,23 @@ def chat(
             console.print("[yellow]Bye![/yellow]")
             return
         if msg.strip().startswith("/review "):
-            _local_review(msg.strip()[len("/review "):], url)
+            path = msg.strip()[len("/review "):]
+            data = _local_review(path, url)
+            if data:
+                titles = [f['title'] for f in data.get("findings", [])]
+                history.append({"role": "user", "content": f"/review {path}"})
+                history.append({"role": "assistant", "content": f"Reviewed {path}: {data.get('summary', 'No issues found.')} Findings: {titles}"})
+                if len(history) > MAX_HISTORY * 2:
+                    history = history[-(MAX_HISTORY * 2):]
             continue
         if msg.strip().startswith("/scan "):
-            _local_scan(msg.strip()[len("/scan "):], url)
+            arg = msg.strip()[len("/scan "):]
+            result = _local_scan(arg, url)
+            if result:
+                history.append({"role": "user", "content": f"/scan {arg}"})
+                history.append({"role": "assistant", "content": f"Scan complete: {result['files']} files, {result['findings']} findings, {result['tokens']} tokens, {result['time']:.1f}s"})
+                if len(history) > MAX_HISTORY * 2:
+                    history = history[-(MAX_HISTORY * 2):]
             continue
         reply = _do_chat(msg, url, history)
         if reply is not None:
@@ -135,7 +148,7 @@ def _do_chat(message: str, url: str, history: list[dict]) -> str | None:
     return data["reply"]
 
 
-def _run_review(code: str, filename: str, url: str):
+def _run_review(code: str, filename: str, url: str) -> dict | None:
     with console.status("[cyan]Running council...[/cyan]", spinner="dots"):
         try:
             resp = httpx.post(
@@ -146,26 +159,27 @@ def _run_review(code: str, filename: str, url: str):
             resp.raise_for_status()
         except httpx.HTTPError as e:
             console.print(f"[red]Request failed: {e}[/red]")
-            return
+            return None
     data = resp.json()
     if not data["findings"]:
         console.print("[green]No issues found.[/green]")
-        return
-    for i, finding in enumerate(data["findings"], 1):
-        print_finding(finding, i)
-    console.print()
-    print_summary(data)
+    else:
+        for i, finding in enumerate(data["findings"], 1):
+            print_finding(finding, i)
+        console.print()
+        print_summary(data)
+    return data
 
 
-def _local_review(arg: str, url: str):
+def _local_review(arg: str, url: str) -> dict | None:
     path = Path(arg)
     if not path.exists():
         console.print(f"[red]File not found: {path}[/red]")
-        return
-    _run_review(path.read_text(), path.name, url)
+        return None
+    return _run_review(path.read_text(), path.name, url)
 
 
-def _local_scan(arg: str, url: str):
+def _local_scan(arg: str, url: str) -> dict | None:
     parts = arg.split()
     path = Path(parts[0])
     opts = {"yes": "--yes" in parts, "fix": "--fix" in parts}
@@ -174,7 +188,7 @@ def _local_scan(arg: str, url: str):
             opts["ext"] = parts[i + 1]
         if p == "--limit" and i + 1 < len(parts):
             opts["limit"] = int(parts[i + 1])
-    _run_scan(path, url, opts)
+    return _run_scan(path, url, opts)
 
 
 @app.command()
@@ -191,7 +205,7 @@ def scan(
     _run_scan(directory, url, opts)
 
 
-def _run_scan(directory: Path, url: str, opts: dict):
+def _run_scan(directory: Path, url: str, opts: dict) -> dict | None:
     ext = opts.get("ext", ".py")
     fix = opts.get("fix", False)
     limit = opts.get("limit", 0)
@@ -199,7 +213,7 @@ def _run_scan(directory: Path, url: str, opts: dict):
 
     if not directory.is_dir():
         console.print(f"[red]Not a directory: {directory}[/red]")
-        return
+        return None
 
     files = sorted(directory.rglob(f"*{ext}"))
     gitignore = directory / ".gitignore"
@@ -218,7 +232,7 @@ def _run_scan(directory: Path, url: str, opts: dict):
 
     if not files:
         console.print(f"[yellow]No {ext} files found in {directory}[/yellow]")
-        return
+        return None
 
     est_time = len(files) * 16
     est_tokens = len(files) * 3000
@@ -229,10 +243,10 @@ def _run_scan(directory: Path, url: str, opts: dict):
             ok = console.input("[yellow]  Continue? [Y/n]: [/yellow]")
         except (EOFError, KeyboardInterrupt):
             console.print("\n[yellow]Aborted[/yellow]")
-            return
+            return None
         if ok.strip().lower() not in ("", "y", "yes"):
             console.print("[yellow]Aborted[/yellow]")
-            return
+            return None
     console.print()
 
     total_findings = 0
@@ -273,6 +287,7 @@ def _run_scan(directory: Path, url: str, opts: dict):
     console.print(f"  Findings: {total_findings}")
     console.print(f"  Tokens: {total_tokens}")
     console.print(f"  Time: {total_time:.1f}s")
+    return {"files": len(results), "findings": total_findings, "tokens": total_tokens, "time": total_time}
 
 
 if __name__ == "__main__":
