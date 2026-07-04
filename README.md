@@ -97,24 +97,6 @@ Inside `./synod chat`:
 - CWE-352 (CSRF): ≈0.667 recall — inconsistent across runs due to LLM sampling variance.
 - Results are stochastic; individual runs may vary.
 
-### `qwen3.7-max-2026-05-20` benchmark (3 runs per sample)
-
-| Sample | Category | Precision | Recall | F1 | Tokens | Time(s) |
-|--------|----------|-----------|--------|----|--------|---------|
-| coupling_sample.py | quality | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 5612 | 166.7 |
-| quality_sample.py | quality | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 46501 | 126.1 |
-| **Avg (quality)** | | **1.000** | **1.000** | **1.000** | 26056 | 146.4 |
-| csrf_missing.py | security | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 15587 | 151.6 |
-| insecure_deserialize.py | security | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 25455 | 151.7 |
-| path_traversal.py | security | 1.000±0.000 | 0.000±0.000 | 0.000±0.000 | 33127 | 211.9 |
-| vulnerable_code.py | security | 1.000±0.000 | 0.000±0.000 | 0.000±0.000 | 55744 | 245.1 |
-| xss_app.py | security | 1.000±0.000 | 0.000±0.000 | 0.000±0.000 | 59210 | 232.5 |
-| **Avg (security)** | | **1.000** | **0.400** | **0.400** | 37825 | 198.6 |
-
-3.7-max finds CWE-352 and CWE-502 consistently but fails on CWE-22, CWE-78, CWE-79, CWE-89, CWE-94, and CWE-798. Inspector agent fails on all runs (returns None — model refuses structured JSON output). Sentinel agent is unreliable, succeeding ~40% of the time.
-
-**Recommendation:** qwen3.7-max is unsuitable for Synod's multi-agent architecture. Stick with the default `qwen3-coder-plus-2025-07-22` for production.
-
 ## API Reference
 
 | Endpoint | Method | Description |
