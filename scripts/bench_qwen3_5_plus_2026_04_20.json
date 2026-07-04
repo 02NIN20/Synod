@@ -1,0 +1,205 @@
+{
+  "clean_sample.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 3093,
+      "time_s": 159.86,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 6806,
+      "time_s": 138.17,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 9644,
+      "time_s": 126.47,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "coupling_sample.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 12011,
+      "time_s": 246.65,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 13758,
+      "time_s": 246.24,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 13758,
+      "time_s": 279.23,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "csrf_missing.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 13758,
+      "time_s": 279.24,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "run": 2,
+      "total_findings": 1,
+      "tokens": 15597,
+      "time_s": 239.94,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 1,
+      "tokens": 16946,
+      "time_s": 201.34,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "insecure_deserialize.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 18495,
+      "time_s": 212.15,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 19884,
+      "time_s": 210.01,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 21337,
+      "time_s": 211.09,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  ],
+  "path_traversal.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 23047,
+      "time_s": 214.98,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 24347,
+      "time_s": 238.69,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 25962,
+      "time_s": 244.05,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  ],
+  "quality_sample.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 28337,
+      "time_s": 208.26,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 30647,
+      "time_s": 206.9,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 32907,
+      "time_s": 206.24,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "vulnerable_code.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 34887,
+      "time_s": 215.57,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 34887,
+      "time_s": 279.27,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 36783,
+      "time_s": 245.58,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  ]
+}

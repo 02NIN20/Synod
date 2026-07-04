@@ -1,0 +1,31 @@
+{
+  "clean_sample.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 3444,
+      "time_s": 136.61,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 8071,
+      "time_s": 86.71,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 12310,
+      "time_s": 80.29,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ]
+}

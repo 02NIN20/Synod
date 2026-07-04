@@ -1,0 +1,234 @@
+{
+  "clean_sample.py": [
+    {
+      "run": 1,
+      "total_findings": 0,
+      "tokens": 2289,
+      "time_s": 10.96,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 0,
+      "tokens": 4584,
+      "time_s": 8.65,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 0,
+      "tokens": 6888,
+      "time_s": 10.54,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "coupling_sample.py": [
+    {
+      "run": 1,
+      "total_findings": 5,
+      "tokens": 9284,
+      "time_s": 9.19,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 5,
+      "tokens": 11753,
+      "time_s": 12.49,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 5,
+      "tokens": 14245,
+      "time_s": 12.41,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "csrf_missing.py": [
+    {
+      "run": 1,
+      "total_findings": 6,
+      "tokens": 16252,
+      "time_s": 12.41,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 5,
+      "tokens": 18248,
+      "time_s": 11.74,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "run": 3,
+      "total_findings": 6,
+      "tokens": 20250,
+      "time_s": 11.76,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "insecure_deserialize.py": [
+    {
+      "run": 1,
+      "total_findings": 6,
+      "tokens": 22044,
+      "time_s": 11.86,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 6,
+      "tokens": 23846,
+      "time_s": 12.46,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 6,
+      "tokens": 25649,
+      "time_s": 12.39,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "path_traversal.py": [
+    {
+      "run": 1,
+      "total_findings": 4,
+      "tokens": 27912,
+      "time_s": 14.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 4,
+      "tokens": 30173,
+      "time_s": 14.32,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 4,
+      "tokens": 32337,
+      "time_s": 12.7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "quality_sample.py": [
+    {
+      "run": 1,
+      "total_findings": 5,
+      "tokens": 35644,
+      "time_s": 9.16,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 5,
+      "tokens": 39108,
+      "time_s": 9.6,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 5,
+      "tokens": 42418,
+      "time_s": 8.41,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ],
+  "vulnerable_code.py": [
+    {
+      "run": 1,
+      "total_findings": 9,
+      "tokens": 45012,
+      "time_s": 14.64,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 10,
+      "tokens": 47533,
+      "time_s": 12.62,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 8,
+      "tokens": 50178,
+      "time_s": 14.5,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1": 0.857
+    }
+  ],
+  "xss_app.py": [
+    {
+      "run": 1,
+      "total_findings": 6,
+      "tokens": 52355,
+      "time_s": 13.83,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 2,
+      "total_findings": 5,
+      "tokens": 54487,
+      "time_s": 14.69,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "run": 3,
+      "total_findings": 6,
+      "tokens": 56703,
+      "time_s": 14.77,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "qwen3.7-plus-2026-05-26": {
+    "clean_sample.py": {
+      "total_findings": 0,
+      "tokens": 3195,
+      "time_s": 129.14,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": []
+    },
+    "coupling_sample.py": {
+      "total_findings": 0,
+      "tokens": 4823,
+      "time_s": 201.41,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": []
+    },
+    "csrf_missing.py": {
+      "total_findings": 0,
+      "tokens": 8035,
+      "time_s": 142.56,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": []
+    },
+    "insecure_deserialize.py": {
+      "total_findings": 0,
+      "tokens": 9669,
+      "time_s": 214.02,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": []
+    },
+    "path_traversal.py": {
+      "total_findings": 0,
+      "tokens": 11121,
+      "time_s": 209.5,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": []
+    },
+    "quality_sample.py": {
+      "total_findings": 0,
+      "tokens": 12834,
+      "time_s": 196.24,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": []
+    },
+    "vulnerable_code.py": {
+      "total_findings": 0,
+      "tokens": 17053,
+      "time_s": 210.59,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": []
+    },
+    "xss_app.py": {
+      "total_findings": 0,
+      "tokens": 18694,
+      "time_s": 212.43,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": []
+    }
+  },
+  "qwen3.7-max-2026-05-20": {
+    "clean_sample.py": {
+      "total_findings": 0,
+      "tokens": 4836,
+      "time_s": 148.48,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": []
+    },
+    "coupling_sample.py": {
+      "total_findings": 0,
+      "tokens": 6620,
+      "time_s": 204.4,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": []
+    },
+    "csrf_missing.py": {
+      "total_findings": 1,
+      "tokens": 10595,
+      "time_s": 180.39,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [
+        "CWE-352"
+      ]
+    },
+    "insecure_deserialize.py": {
+      "total_findings": 1,
+      "tokens": 13689,
+      "time_s": 138.91,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": [
+        "CWE-502"
+      ]
+    },
+    "path_traversal.py": {
+      "total_findings": 4,
+      "tokens": 17109,
+      "time_s": 179.99,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": []
+    },
+    "quality_sample.py": {
+      "total_findings": 0,
+      "tokens": 20878,
+      "time_s": 125.07,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "found_cwes": []
+    },
+    "vulnerable_code.py": {
+      "total_findings": 0,
+      "tokens": 22803,
+      "time_s": 245.31,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": []
+    },
+    "xss_app.py": {
+      "total_findings": 0,
+      "tokens": 24446,
+      "time_s": 274.21,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "found_cwes": []
+    }
+  }
+}
