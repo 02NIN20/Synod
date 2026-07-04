@@ -270,7 +270,8 @@ def _run_scan(directory: Path, url: str, opts: dict, history: list[dict] | None 
         total_findings += n
         total_tokens += data["tokens_used"]
         total_time += elapsed
-        results.append((rel, n, data["tokens_used"], elapsed))
+        titles = [f["title"] for f in data.get("findings", [])]
+        results.append({"file": str(rel), "findings_count": n, "tokens": data["tokens_used"], "time": elapsed, "titles": titles})
 
         if n:
             console.print(f"  [yellow]→ {rel} — {n} finding(s)[/yellow]")
@@ -283,9 +284,13 @@ def _run_scan(directory: Path, url: str, opts: dict, history: list[dict] | None 
     console.print(f"  Tokens: {total_tokens}")
     console.print(f"  Time: {total_time:.1f}s")
     if history is not None:
+        file_summaries = "; ".join(
+            f"{r['file']}: {r['findings_count']} findings ({r['titles']})"
+            for r in results
+        )
         history.append({"role": "user", "content": f"/scan {directory}"})
-        history.append({"role": "assistant", "content": f"Scanned {directory}: {total_findings} findings across {len(results)} files."})
-    return {"files": len(results), "findings": total_findings, "tokens": total_tokens, "time": total_time}
+        history.append({"role": "assistant", "content": f"Scanned {directory}: {total_findings} findings across {len(results)} files. Per file: {file_summaries}"})
+    return {"files": len(results), "findings": total_findings, "tokens": total_tokens, "time": total_time, "file_results": results}
 
 
 if __name__ == "__main__":
