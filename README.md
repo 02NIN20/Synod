@@ -111,7 +111,11 @@ Inside `./synod chat`:
 
 **Conclusion:** the Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for classes like path traversal and command injection. It does not help CSRF, which remains a known weakness. The xss_app precision regression has been addressed in code.
 
-> **Note on re-verification:** the table above reflects the last complete benchmark run using `qwen3-coder-plus-2025-07-22`. A subsequent attempt to re-run the full suite with `qwen3.7-max-2026-05-20` failed — that model returns `None` for Inspector/Sentinel structured-JSON prompts, making it incompatible with the multi-agent council. During that run the DashScope free quota was also exhausted, so the Semgrep+LLM condition degenerated to Semgrep-only. Final re-verification of the xss_app fix is pending a working model and available quota.
+> **Note on re-verification:** the table above reflects the last complete benchmark run using `qwen3-coder-plus-2025-07-22`. Subsequent attempts to re-verify with alternate models failed:
+> - `qwen3.7-max-2026-05-20` and `qwen3.6-plus-2026-04-02` both return `None` for Inspector/Sentinel structured-JSON prompts, making them incompatible with the multi-agent council.
+> - `qwen3-coder-plus-2025-07-22` (the only compatible model found so far) hit the DashScope free-tier quota during re-verification.
+>
+> Final re-verification of the xss_app fix is pending either a quota reset for `qwen3-coder-plus` or a model that supports strict JSON output for agent prompts.
 
 ## API Reference
 

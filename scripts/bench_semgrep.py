@@ -8,6 +8,7 @@ Two conditions per sample:
 tokens, time, and source breakdown.
 """
 
+import argparse
 import asyncio
 import json
 import math
@@ -75,7 +76,7 @@ GROUND_TRUTH = {
     },
 }
 
-NUM_RUNS = 3
+DEFAULT_NUM_RUNS = 3
 
 
 def compute_metrics(findings, truth):
@@ -137,10 +138,16 @@ def source_breakdown(findings):
     return {"semgrep": semgrep, "llm": llm}
 
 
-async def run_condition(model: str, condition: str) -> dict:
-    """Run all samples for one condition (LLM-only or Semgrep+LLM)."""
+async def run_condition(
+    model: str,
+    condition: str,
+    samples: list[str] | None = None,
+    num_runs: int = DEFAULT_NUM_RUNS,
+) -> dict:
+    """Run selected samples for one condition (LLM-only or Semgrep+LLM)."""
     print(f"\n{'='*60}")
-    print(f"CONDITION: {condition} ({NUM_RUNS} runs/sample)")
+    print(f"CONDITION: {condition} ({num_runs} runs/sample)")
+    print(f"MODEL: {model}")
     print(f"{'='*60}")
 
     # Toggle semgrep globally via monkey-patch for LLM-only condition.
@@ -153,11 +160,18 @@ async def run_condition(model: str, condition: str) -> dict:
     llm = QwenClient(model=model)
     council = Council(llm)
 
+    sample_names = sorted(samples if samples else GROUND_TRUTH.keys())
     results = {}
-    for filename in sorted(GROUND_TRUTH.keys()):
+    total_tokens = 0
+    total_time = 0.0
+
+    for filename in sample_names:
         filepath = os.path.join(SAMPLES_DIR, filename)
         if not os.path.exists(filepath):
             print(f"SKIP {filename}: file not found")
+            continue
+        if filename not in GROUND_TRUTH:
+            print(f"SKIP {filename}: no ground truth")
             continue
 
         with open(filepath) as f:
@@ -167,7 +181,7 @@ async def run_condition(model: str, condition: str) -> dict:
         print(f"\n  --- {filename} ({truth['category']}) ---")
 
         runs = []
-        for run_idx in range(NUM_RUNS):
+        for run_idx in range(num_runs):
             request = ReviewRequest(code=code, filename=filename, language="python")
             t0 = time.time()
             response = await council.review(request)
@@ -191,6 +205,8 @@ async def run_condition(model: str, condition: str) -> dict:
                 "errors": response.errors,
             }
             runs.append(run_data)
+            total_tokens += response.tokens_used
+            total_time += elapsed
             print(
                 f"    run {run_idx+1}: P={precision:.1%} R={recall:.1%} "
                 f"F1={f1:.1%} tok={response.tokens_used} t={elapsed:.1f}s "
@@ -202,20 +218,66 @@ async def run_condition(model: str, condition: str) -> dict:
 
     # Restore original semgrep function
     semgrep_mod.run_semgrep = original_run_semgrep
+    print(f"\n  Subtotal: {total_tokens} tokens, {total_time:.1f}s")
     return results
 
 
 async def main():
-    model = os.environ.get("QWEN_MODEL", "qwen3-coder-plus-2025-07-22")
-    conditions = ["LLM-only", "Semgrep+LLM"]
+    parser = argparse.ArgumentParser(description="Benchmark Semgrep pre-filter impact")
+    parser.add_argument(
+        "--sample",
+        action="append",
+        help="Sample filename to benchmark (can be repeated). Default: all samples.",
+    )
+    parser.add_argument(
+        "--runs",
+        type=int,
+        default=DEFAULT_NUM_RUNS,
+        help=f"Number of runs per sample. Default: {DEFAULT_NUM_RUNS}.",
+    )
+    parser.add_argument(
+        "--method",
+        choices=["LLM-only", "Semgrep+LLM", "both"],
+        default="both",
+        help="Condition to benchmark. Default: both.",
+    )
+    parser.add_argument(
+        "--model",
+        default=os.environ.get("QWEN_MODEL", "qwen3-coder-plus-2025-07-22"),
+        help="Qwen model to use. Default: QWEN_MODEL env var or qwen3-coder-plus-2025-07-22.",
+    )
+    parser.add_argument(
+        "--estimate-cost",
+        action="store_true",
+        help="Print token cost estimate and exit without running.",
+    )
+    args = parser.parse_args()
+
+    samples = args.sample if args.sample else None
+    conditions = ["LLM-only", "Semgrep+LLM"] if args.method == "both" else [args.method]
+
+    sample_names = samples if samples else sorted(GROUND_TRUTH.keys())
+    sample_names = [s for s in sample_names if s in GROUND_TRUTH]
+
+    if args.estimate_cost:
+        avg_tokens_per_run = 28000  # observed average across security/quality samples
+        total_runs = len(sample_names) * args.runs * len(conditions)
+        estimated_tokens = total_runs * avg_tokens_per_run
+        print(f"Estimated samples: {len(sample_names)}")
+        print(f"Estimated runs: {total_runs}")
+        print(f"Estimated tokens: ~{estimated_tokens:,}")
+        print(f"At ~1M token budget: {estimated_tokens / 1_000_000:.2%} of quota")
+        return
 
     all_results = {}
     for condition in conditions:
-        all_results[condition] = await run_condition(model, condition)
+        all_results[condition] = await run_condition(
+            args.model, condition, samples=samples, num_runs=args.runs
+        )
 
     # Print combined table
     print("\n\n" + "=" * 120)
-    print("BENCHMARK RESULTS: LLM-only vs Semgrep+LLM")
+    print("BENCHMARK RESULTS")
     print("=" * 120)
 
     header = (
@@ -226,7 +288,7 @@ async def main():
     print("-" * 120)
 
     rows = []
-    for filename in sorted(GROUND_TRUTH.keys()):
+    for filename in sample_names:
         for condition in conditions:
             runs = all_results[condition][filename]
             precisions = [r["precision"] for r in runs]
@@ -252,30 +314,31 @@ async def main():
             rows.append(row)
             print(row)
 
-    # Category averages
-    print("\n" + "-" * 120)
-    print("CATEGORY AVERAGES")
-    print("-" * 120)
-    for condition in conditions:
-        for cat in ("security", "quality"):
-            cat_files = [fn for fn in GROUND_TRUTH if GROUND_TRUTH[fn]["category"] == cat]
-            flat_p, flat_r, flat_f, flat_tok, flat_tim = [], [], [], [], []
-            for fn in cat_files:
-                for run in all_results[condition][fn]:
-                    flat_p.append(run["precision"])
-                    flat_r.append(run["recall"])
-                    flat_f.append(run["f1"])
-                    flat_tok.append(run["tokens"])
-                    flat_tim.append(run["time_s"])
-            p_m, p_s = mean_std(flat_p)
-            r_m, r_s = mean_std(flat_r)
-            f_m, f_s = mean_std(flat_f)
-            avg_tok = sum(flat_tok) / len(flat_tok)
-            avg_tim = sum(flat_tim) / len(flat_tim)
-            print(
-                f"{('Avg (' + cat + ')'):<28} {condition:<12} {p_m:.3f}±{p_s:.3f}  "
-                f"{r_m:.3f}±{r_s:.3f}  {f_m:.3f}±{f_s:.3f}  {avg_tok:<6.0f}  {avg_tim:<6.1f}"
-            )
+    # Category averages (only for full runs)
+    if not samples:
+        print("\n" + "-" * 120)
+        print("CATEGORY AVERAGES")
+        print("-" * 120)
+        for condition in conditions:
+            for cat in ("security", "quality"):
+                cat_files = [fn for fn in GROUND_TRUTH if GROUND_TRUTH[fn]["category"] == cat]
+                flat_p, flat_r, flat_f, flat_tok, flat_tim = [], [], [], [], []
+                for fn in cat_files:
+                    for run in all_results[condition][fn]:
+                        flat_p.append(run["precision"])
+                        flat_r.append(run["recall"])
+                        flat_f.append(run["f1"])
+                        flat_tok.append(run["tokens"])
+                        flat_tim.append(run["time_s"])
+                p_m, p_s = mean_std(flat_p)
+                r_m, r_s = mean_std(flat_r)
+                f_m, f_s = mean_std(flat_f)
+                avg_tok = sum(flat_tok) / len(flat_tok)
+                avg_tim = sum(flat_tim) / len(flat_tim)
+                print(
+                    f"{('Avg (' + cat + ')'):<28} {condition:<12} {p_m:.3f}±{p_s:.3f}  "
+                    f"{r_m:.3f}±{r_s:.3f}  {f_m:.3f}±{f_s:.3f}  {avg_tok:<6.0f}  {avg_tim:<6.1f}"
+                )
 
     # Save results
     outpath = os.path.join(os.path.dirname(__file__), "bench_semgrep_results.json")
