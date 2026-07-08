@@ -3,329 +3,340 @@
     "coupling_sample.py": [
       {
         "run": 1,
-        "total_findings": 7,
-        "tokens": 2591,
-        "time_s": 27.01,
-        "found_cwes": [
-          "CWE-89",
-          "CWE-908"
-        ],
+        "total_findings": 0,
+        "tokens": 3534,
+        "time_s": 151.14,
+        "found_cwes": [],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "semgrep_count": 0,
-        "llm_count": 7,
+        "llm_count": 0,
         "errors": []
       },
       {
         "run": 2,
-        "total_findings": 7,
-        "tokens": 5605,
-        "time_s": 32.39,
-        "found_cwes": [
-          "CWE-707"
-        ],
+        "total_findings": 0,
+        "tokens": 5287,
+        "time_s": 215.35,
+        "found_cwes": [],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "semgrep_count": 0,
-        "llm_count": 7,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 6,
-        "tokens": 8245,
-        "time_s": 28.25,
-        "found_cwes": [
-          "CWE-89"
-        ],
+        "total_findings": 0,
+        "tokens": 8474,
+        "time_s": 142.33,
+        "found_cwes": [],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "semgrep_count": 0,
-        "llm_count": 6,
+        "llm_count": 0,
         "errors": []
       }
     ],
     "csrf_missing.py": [
       {
         "run": 1,
-        "total_findings": 3,
-        "tokens": 10232,
-        "time_s": 22.75,
+        "total_findings": 1,
+        "tokens": 12171,
+        "time_s": 184.2,
         "found_cwes": [
           "CWE-352"
         ],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
-        "semgrep_count": 1,
-        "llm_count": 2,
-        "errors": []
+        "semgrep_count": 0,
+        "llm_count": 1,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 5,
-        "tokens": 12584,
-        "time_s": 29.65,
-        "found_cwes": [],
+        "total_findings": 1,
+        "tokens": 15872,
+        "time_s": 155.75,
+        "found_cwes": [
+          "CWE-352"
+        ],
         "precision": 1.0,
-        "recall": 0.0,
-        "f1": 0.0,
-        "semgrep_count": 1,
-        "llm_count": 4,
-        "errors": []
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 1,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 5,
-        "tokens": 14954,
-        "time_s": 29.83,
-        "found_cwes": [],
+        "total_findings": 1,
+        "tokens": 17854,
+        "time_s": 219.69,
+        "found_cwes": [
+          "CWE-352"
+        ],
         "precision": 1.0,
-        "recall": 0.0,
-        "f1": 0.0,
-        "semgrep_count": 1,
-        "llm_count": 4,
-        "errors": []
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 1,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       }
     ],
     "insecure_deserialize.py": [
       {
         "run": 1,
-        "total_findings": 9,
-        "tokens": 17640,
-        "time_s": 27.82,
+        "total_findings": 2,
+        "tokens": 21737,
+        "time_s": 188.98,
         "found_cwes": [
           "CWE-502"
         ],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
-        "semgrep_count": 3,
-        "llm_count": 6,
-        "errors": []
+        "semgrep_count": 0,
+        "llm_count": 2,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 7,
-        "tokens": 20328,
-        "time_s": 27.1,
+        "total_findings": 1,
+        "tokens": 25525,
+        "time_s": 161.1,
         "found_cwes": [
           "CWE-502"
         ],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
-        "semgrep_count": 3,
-        "llm_count": 4,
-        "errors": []
+        "semgrep_count": 0,
+        "llm_count": 1,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 6,
-        "tokens": 22883,
-        "time_s": 23.86,
+        "total_findings": 2,
+        "tokens": 29391,
+        "time_s": 160.75,
         "found_cwes": [
           "CWE-502"
         ],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
-        "semgrep_count": 3,
-        "llm_count": 3,
-        "errors": []
+        "semgrep_count": 0,
+        "llm_count": 2,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       }
     ],
     "path_traversal.py": [
       {
         "run": 1,
-        "total_findings": 4,
-        "tokens": 25117,
-        "time_s": 31.73,
-        "found_cwes": [
-          "CWE-22"
-        ],
+        "total_findings": 1,
+        "tokens": 30821,
+        "time_s": 224.34,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
         "semgrep_count": 1,
-        "llm_count": 3,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+          "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 4,
-        "tokens": 27375,
-        "time_s": 27.52,
-        "found_cwes": [
-          "CWE-22"
-        ],
+        "total_findings": 1,
+        "tokens": 31946,
+        "time_s": 250.77,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
         "semgrep_count": 1,
-        "llm_count": 3,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+          "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 4,
-        "tokens": 29645,
-        "time_s": 28.62,
-        "found_cwes": [
-          "CWE-22"
-        ],
+        "total_findings": 1,
+        "tokens": 33427,
+        "time_s": 254.06,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
         "semgrep_count": 1,
-        "llm_count": 3,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+          "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       }
     ],
     "quality_sample.py": [
       {
         "run": 1,
-        "total_findings": 5,
-        "tokens": 33019,
-        "time_s": 22.18,
+        "total_findings": 0,
+        "tokens": 37624,
+        "time_s": 181.67,
         "found_cwes": [],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "semgrep_count": 0,
-        "llm_count": 5,
+        "llm_count": 0,
         "errors": []
       },
       {
         "run": 2,
-        "total_findings": 8,
-        "tokens": 36869,
-        "time_s": 30.65,
-        "found_cwes": [
-          "CWE-1044",
-          "CWE-1045",
-          "CWE-1047"
-        ],
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 0,
-        "llm_count": 8,
-        "errors": []
-      },
-      {
-        "run": 3,
-        "total_findings": 5,
-        "tokens": 40397,
-        "time_s": 23.77,
+        "total_findings": 0,
+        "tokens": 41685,
+        "time_s": 144.49,
         "found_cwes": [],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "semgrep_count": 0,
-        "llm_count": 5,
+        "llm_count": 0,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 0,
+        "tokens": 45677,
+        "time_s": 170.35,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 0,
         "errors": []
       }
     ],
     "vulnerable_code.py": [
       {
         "run": 1,
-        "total_findings": 13,
-        "tokens": 43990,
-        "time_s": 28.05,
-        "found_cwes": [
-          "CWE-78",
-          "CWE-798"
-        ],
+        "total_findings": 2,
+        "tokens": 49418,
+        "time_s": 220.12,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 0.5,
-        "f1": 0.667,
-        "semgrep_count": 4,
-        "llm_count": 9,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 2,
+        "llm_count": 0,
+        "errors": [
+          "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 13,
-        "tokens": 47628,
-        "time_s": 32.2,
-        "found_cwes": [
-          "CWE-78",
-          "CWE-798",
-          "CWE-94"
-        ],
+        "total_findings": 2,
+        "tokens": 49418,
+        "time_s": 293.62,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 0.75,
-        "f1": 0.857,
-        "semgrep_count": 4,
-        "llm_count": 9,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 2,
+        "llm_count": 0,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+          "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 12,
-        "tokens": 51372,
-        "time_s": 33.11,
-        "found_cwes": [
-          "CWE-78",
-          "CWE-798"
-        ],
+        "total_findings": 2,
+        "tokens": 51321,
+        "time_s": 261.1,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 0.5,
-        "f1": 0.667,
-        "semgrep_count": 4,
-        "llm_count": 8,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 2,
+        "llm_count": 0,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+          "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       }
     ],
     "xss_app.py": [
       {
         "run": 1,
-        "total_findings": 10,
-        "tokens": 56003,
-        "time_s": 37.07,
-        "found_cwes": [
-          "CWE-79"
-        ],
+        "total_findings": 3,
+        "tokens": 52994,
+        "time_s": 260.28,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 4,
-        "llm_count": 6,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 3,
+        "llm_count": 0,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+          "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 12,
-        "tokens": 60466,
-        "time_s": 33.58,
-        "found_cwes": [
-          "CWE-79"
-        ],
+        "total_findings": 3,
+        "tokens": 52994,
+        "time_s": 292.91,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 4,
-        "llm_count": 8,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 3,
+        "llm_count": 0,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+          "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 12,
-        "tokens": 64897,
-        "time_s": 31.28,
-        "found_cwes": [
-          "CWE-79"
-        ],
+        "total_findings": 3,
+        "tokens": 52994,
+        "time_s": 288.43,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 4,
-        "llm_count": 8,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 3,
+        "llm_count": 0,
+        "errors": [
+          "Inspector: the JSON object must be str, bytes or bytearray, not NoneType",
+          "Sentinel: the JSON object must be str, bytes or bytearray, not NoneType"
+        ]
       }
     ]
   },
@@ -333,333 +344,371 @@
     "coupling_sample.py": [
       {
         "run": 1,
-        "total_findings": 7,
-        "tokens": 2917,
-        "time_s": 31.03,
-        "found_cwes": [
-          "CWE-1046"
-        ],
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 0,
-        "llm_count": 7,
-        "errors": []
-      },
-      {
-        "run": 2,
-        "total_findings": 7,
-        "tokens": 5762,
-        "time_s": 26.9,
-        "found_cwes": [
-          "CWE-639",
-          "CWE-89"
-        ],
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 0,
-        "llm_count": 7,
-        "errors": []
-      },
-      {
-        "run": 3,
-        "total_findings": 5,
-        "tokens": 8247,
-        "time_s": 25.99,
+        "total_findings": 0,
+        "tokens": 0,
+        "time_s": 115.16,
         "found_cwes": [],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "semgrep_count": 0,
-        "llm_count": 5,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-591390a8-992e-9909-9e42-e36633b2b4b6', 'request_id': '591390a8-992e-9909-9e42-e36633b2b4b6'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-0c31c080-41fd-9314-be93-bea1dd0c802e', 'request_id': '0c31c080-41fd-9314-be93-bea1dd0c802e'}"
+        ]
+      },
+      {
+        "run": 2,
+        "total_findings": 0,
+        "tokens": 0,
+        "time_s": 18.11,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-d6b938ba-0a24-9fe0-9350-84d53d2db5d9', 'request_id': 'd6b938ba-0a24-9fe0-9350-84d53d2db5d9'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-ab94929b-3b95-918c-9f6a-f05724c83ec9', 'request_id': 'ab94929b-3b95-918c-9f6a-f05724c83ec9'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-5295d7cd-36c8-9bd5-bc23-6fbc5e6ee82e', 'request_id': '5295d7cd-36c8-9bd5-bc23-6fbc5e6ee82e'}"
+        ]
+      },
+      {
+        "run": 3,
+        "total_findings": 0,
+        "tokens": 0,
+        "time_s": 19.15,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-b077aa41-66ca-9eca-8704-4761ddbd2375', 'request_id': 'b077aa41-66ca-9eca-8704-4761ddbd2375'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-c42d303f-9310-91ba-8550-1c82909aa4c8', 'request_id': 'c42d303f-9310-91ba-8550-1c82909aa4c8'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-cd3a1e20-2f39-9074-a0a3-3eb387209112', 'request_id': 'cd3a1e20-2f39-9074-a0a3-3eb387209112'}"
+        ]
       }
     ],
     "csrf_missing.py": [
       {
         "run": 1,
-        "total_findings": 5,
-        "tokens": 10588,
-        "time_s": 28.2,
+        "total_findings": 1,
+        "tokens": 0,
+        "time_s": 11.58,
         "found_cwes": [],
         "precision": 1.0,
         "recall": 0.0,
         "f1": 0.0,
         "semgrep_count": 1,
-        "llm_count": 4,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-764c87ee-d6c7-9bf1-9e15-3beb33f55bd2', 'request_id': '764c87ee-d6c7-9bf1-9e15-3beb33f55bd2'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-202a175b-b1a6-9520-8ba3-5e806b9c1378', 'request_id': '202a175b-b1a6-9520-8ba3-5e806b9c1378'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-a5415d39-75d9-9c6b-8d9d-06b1cfed2f04', 'request_id': 'a5415d39-75d9-9c6b-8d9d-06b1cfed2f04'}"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 5,
-        "tokens": 12943,
-        "time_s": 31.04,
+        "total_findings": 1,
+        "tokens": 0,
+        "time_s": 13.82,
         "found_cwes": [],
         "precision": 1.0,
         "recall": 0.0,
         "f1": 0.0,
         "semgrep_count": 1,
-        "llm_count": 4,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-fd1b8bf5-a78e-9cdc-9c9c-c062f2fe3b9d', 'request_id': 'fd1b8bf5-a78e-9cdc-9c9c-c062f2fe3b9d'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-d6df9636-7ad3-9ec8-9f76-c983ad98c75b', 'request_id': 'd6df9636-7ad3-9ec8-9f76-c983ad98c75b'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-0597484d-037f-977c-b17a-5b0774514dc4', 'request_id': '0597484d-037f-977c-b17a-5b0774514dc4'}"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 3,
-        "tokens": 15054,
-        "time_s": 26.71,
-        "found_cwes": [
-          "CWE-352"
-        ],
+        "total_findings": 1,
+        "tokens": 0,
+        "time_s": 28.06,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
         "semgrep_count": 1,
-        "llm_count": 2,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-568db2c1-1355-93b2-b298-b3559754aa97', 'request_id': '568db2c1-1355-93b2-b298-b3559754aa97'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-8aefe62f-00cf-9df8-b4b3-d96fed808a9c', 'request_id': '8aefe62f-00cf-9df8-b4b3-d96fed808a9c'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-a8fa3f5a-e6f4-917c-9986-6e5554962751', 'request_id': 'a8fa3f5a-e6f4-917c-9986-6e5554962751'}"
+        ]
       }
     ],
     "insecure_deserialize.py": [
       {
         "run": 1,
-        "total_findings": 9,
-        "tokens": 17797,
-        "time_s": 29.24,
-        "found_cwes": [
-          "CWE-502"
-        ],
+        "total_findings": 1,
+        "tokens": 0,
+        "time_s": 16.79,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 3,
-        "llm_count": 6,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 1,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-53a61c97-4845-95b8-812d-d97b7a8161e2', 'request_id': '53a61c97-4845-95b8-812d-d97b7a8161e2'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-edaeca2e-1003-9f50-b2d7-5763b511a539', 'request_id': 'edaeca2e-1003-9f50-b2d7-5763b511a539'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-5f68a196-101a-94fe-82ac-a752a6b25e3f', 'request_id': '5f68a196-101a-94fe-82ac-a752a6b25e3f'}"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 8,
-        "tokens": 20426,
-        "time_s": 26.83,
-        "found_cwes": [
-          "CWE-502"
-        ],
+        "total_findings": 1,
+        "tokens": 0,
+        "time_s": 16.11,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 3,
-        "llm_count": 5,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 1,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-5f1bc54b-d7a9-9d0c-9d77-6f639215cb9a', 'request_id': '5f1bc54b-d7a9-9d0c-9d77-6f639215cb9a'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-ae99a62d-4c1f-94a6-aa57-8420cc46165f', 'request_id': 'ae99a62d-4c1f-94a6-aa57-8420cc46165f'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-69d8b67b-6c17-935d-bb64-b8f3aa76c9f9', 'request_id': '69d8b67b-6c17-935d-bb64-b8f3aa76c9f9'}"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 8,
-        "tokens": 23222,
-        "time_s": 33.11,
-        "found_cwes": [
-          "CWE-502"
-        ],
+        "total_findings": 1,
+        "tokens": 0,
+        "time_s": 15.19,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 3,
-        "llm_count": 5,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 1,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-b2780fab-8968-9406-b459-b83e60fda188', 'request_id': 'b2780fab-8968-9406-b459-b83e60fda188'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-e4479976-f1e2-9148-8350-f9adc0ddbaca', 'request_id': 'e4479976-f1e2-9148-8350-f9adc0ddbaca'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-ecbc3b62-2fc0-9348-945b-55bdd1af8571', 'request_id': 'ecbc3b62-2fc0-9348-945b-55bdd1af8571'}"
+        ]
       }
     ],
     "path_traversal.py": [
       {
         "run": 1,
-        "total_findings": 4,
-        "tokens": 25474,
-        "time_s": 36.72,
-        "found_cwes": [
-          "CWE-22"
-        ],
+        "total_findings": 1,
+        "tokens": 0,
+        "time_s": 14.59,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
         "semgrep_count": 1,
-        "llm_count": 3,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-6d8cfb32-40ae-9a1b-9b2a-97b075ca0e8b', 'request_id': '6d8cfb32-40ae-9a1b-9b2a-97b075ca0e8b'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-9c1cda8b-2ce4-92a8-944c-53bf82f9c327', 'request_id': '9c1cda8b-2ce4-92a8-944c-53bf82f9c327'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-d47a42c0-f9dd-996a-a357-2a2f2ea5ca1c', 'request_id': 'd47a42c0-f9dd-996a-a357-2a2f2ea5ca1c'}"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 5,
-        "tokens": 27854,
-        "time_s": 34.08,
-        "found_cwes": [
-          "CWE-22"
-        ],
+        "total_findings": 1,
+        "tokens": 0,
+        "time_s": 16.41,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
         "semgrep_count": 1,
-        "llm_count": 4,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-41c62b69-f111-9f90-830d-7899f42d8f66', 'request_id': '41c62b69-f111-9f90-830d-7899f42d8f66'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-ad14ec13-1d27-9aa7-ba09-bdf65f5ab565', 'request_id': 'ad14ec13-1d27-9aa7-ba09-bdf65f5ab565'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-ec1cc9eb-d9e2-992b-b977-0ae41c3564dc', 'request_id': 'ec1cc9eb-d9e2-992b-b977-0ae41c3564dc'}"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 4,
-        "tokens": 30073,
-        "time_s": 30.68,
-        "found_cwes": [
-          "CWE-22"
-        ],
+        "total_findings": 1,
+        "tokens": 0,
+        "time_s": 15.42,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
         "semgrep_count": 1,
-        "llm_count": 3,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-0acb7e92-d2e3-9e27-91b1-29c75440b094', 'request_id': '0acb7e92-d2e3-9e27-91b1-29c75440b094'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-25f0052c-eb3e-90fa-adfd-1949f9ca3827', 'request_id': '25f0052c-eb3e-90fa-adfd-1949f9ca3827'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-78e2a8b2-3696-9072-9615-8fb8a251d636', 'request_id': '78e2a8b2-3696-9072-9615-8fb8a251d636'}"
+        ]
       }
     ],
     "quality_sample.py": [
       {
         "run": 1,
-        "total_findings": 8,
-        "tokens": 34050,
-        "time_s": 31.31,
-        "found_cwes": [
-          "CWE-1044",
-          "CWE-1045",
-          "CWE-1047"
-        ],
+        "total_findings": 0,
+        "tokens": 0,
+        "time_s": 20.75,
+        "found_cwes": [],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "semgrep_count": 0,
-        "llm_count": 8,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-efd5b25a-9e31-99ab-9c11-8391063ca5e5', 'request_id': 'efd5b25a-9e31-99ab-9c11-8391063ca5e5'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-ba4f3987-925e-97ef-b5bb-6aa456f43399', 'request_id': 'ba4f3987-925e-97ef-b5bb-6aa456f43399'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-c4019b73-7e0a-92db-88ad-52a632de1d6a', 'request_id': 'c4019b73-7e0a-92db-88ad-52a632de1d6a'}"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 5,
-        "tokens": 37448,
-        "time_s": 23.57,
+        "total_findings": 0,
+        "tokens": 0,
+        "time_s": 19.74,
         "found_cwes": [],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "semgrep_count": 0,
-        "llm_count": 5,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-a78bc74b-42a3-973b-b385-55738fecb37e', 'request_id': 'a78bc74b-42a3-973b-b385-55738fecb37e'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-73985df4-e7c3-91c7-a9ae-151a8485b639', 'request_id': '73985df4-e7c3-91c7-a9ae-151a8485b639'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-d06918a6-b878-9594-bb2b-2fd873c91abb', 'request_id': 'd06918a6-b878-9594-bb2b-2fd873c91abb'}"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 5,
-        "tokens": 40948,
-        "time_s": 23.59,
+        "total_findings": 0,
+        "tokens": 0,
+        "time_s": 13.22,
         "found_cwes": [],
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "semgrep_count": 0,
-        "llm_count": 5,
-        "errors": []
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-bb147d8d-d3ed-9ca0-bddf-207992f00318', 'request_id': 'bb147d8d-d3ed-9ca0-bddf-207992f00318'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-f3ee1994-dbdd-995b-8169-35b0c6ece7b1', 'request_id': 'f3ee1994-dbdd-995b-8169-35b0c6ece7b1'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-84247eb1-5055-9f03-9ed5-4bf7d4f141bc', 'request_id': '84247eb1-5055-9f03-9ed5-4bf7d4f141bc'}"
+        ]
       }
     ],
     "vulnerable_code.py": [
       {
         "run": 1,
-        "total_findings": 13,
-        "tokens": 44683,
-        "time_s": 30.45,
-        "found_cwes": [
-          "CWE-78",
-          "CWE-798",
-          "CWE-89"
-        ],
+        "total_findings": 2,
+        "tokens": 0,
+        "time_s": 13.19,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 0.75,
-        "f1": 0.857,
-        "semgrep_count": 4,
-        "llm_count": 9,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 2,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-e252e0fa-700f-9ebb-82d5-0b7f62c44c68', 'request_id': 'e252e0fa-700f-9ebb-82d5-0b7f62c44c68'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-065e2f44-8805-9922-b53d-71151901dd35', 'request_id': '065e2f44-8805-9922-b53d-71151901dd35'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-e300ccba-7ea4-92c9-9e6e-777d820663e7', 'request_id': 'e300ccba-7ea4-92c9-9e6e-777d820663e7'}"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 13,
-        "tokens": 48348,
-        "time_s": 31.5,
-        "found_cwes": [
-          "CWE-78",
-          "CWE-798",
-          "CWE-89",
-          "CWE-94"
-        ],
+        "total_findings": 2,
+        "tokens": 0,
+        "time_s": 12.58,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 4,
-        "llm_count": 9,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 2,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-fe99beff-4aee-9532-aced-2d79edc1f852', 'request_id': 'fe99beff-4aee-9532-aced-2d79edc1f852'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-0b25a8f6-d144-9afd-95e2-b3cc162eb9de', 'request_id': '0b25a8f6-d144-9afd-95e2-b3cc162eb9de'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-f8c9d0e6-4b9e-92e3-8e1c-59d66923d615', 'request_id': 'f8c9d0e6-4b9e-92e3-8e1c-59d66923d615'}"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 13,
-        "tokens": 51888,
-        "time_s": 31.06,
-        "found_cwes": [
-          "CWE-78",
-          "CWE-798",
-          "CWE-89",
-          "CWE-94"
-        ],
+        "total_findings": 2,
+        "tokens": 0,
+        "time_s": 13.56,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 4,
-        "llm_count": 9,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 2,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-95554199-186c-9363-a947-d7bb813d9f20', 'request_id': '95554199-186c-9363-a947-d7bb813d9f20'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-5294c961-9cf6-94b8-851e-2aa23a30974a', 'request_id': '5294c961-9cf6-94b8-851e-2aa23a30974a'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-9318c205-751f-94dc-b5d7-5bd0483c36f8', 'request_id': '9318c205-751f-94dc-b5d7-5bd0483c36f8'}"
+        ]
       }
     ],
     "xss_app.py": [
       {
         "run": 1,
-        "total_findings": 10,
-        "tokens": 56351,
-        "time_s": 28.91,
-        "found_cwes": [
-          "CWE-79"
-        ],
+        "total_findings": 3,
+        "tokens": 0,
+        "time_s": 15.78,
+        "found_cwes": [],
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "semgrep_count": 4,
-        "llm_count": 6,
-        "errors": []
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 3,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-61862be0-3e5a-9c09-9a4d-7ad109cf9d68', 'request_id': '61862be0-3e5a-9c09-9a4d-7ad109cf9d68'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-d4af7183-3e8a-9484-bcfa-a6eba3eb6986', 'request_id': 'd4af7183-3e8a-9484-bcfa-a6eba3eb6986'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-fba208be-85ac-9ac5-ac6c-bd9d1179f620', 'request_id': 'fba208be-85ac-9ac5-ac6c-bd9d1179f620'}"
+        ]
       },
       {
         "run": 2,
-        "total_findings": 11,
-        "tokens": 60910,
-        "time_s": 32.32,
-        "found_cwes": [
-          "CWE-352",
-          "CWE-79"
-        ],
-        "precision": 0.5,
-        "recall": 1.0,
-        "f1": 0.667,
-        "semgrep_count": 4,
-        "llm_count": 7,
-        "errors": []
+        "total_findings": 3,
+        "tokens": 0,
+        "time_s": 18.12,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 3,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-a40e5126-e077-9377-91b5-9c43046968c3', 'request_id': 'a40e5126-e077-9377-91b5-9c43046968c3'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-9aca5228-6d5e-9be6-b801-9094a62861a5', 'request_id': '9aca5228-6d5e-9be6-b801-9094a62861a5'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-dc07843f-eb7c-9a30-97c8-31764cde4acd', 'request_id': 'dc07843f-eb7c-9a30-97c8-31764cde4acd'}"
+        ]
       },
       {
         "run": 3,
-        "total_findings": 11,
-        "tokens": 65595,
-        "time_s": 29.47,
-        "found_cwes": [
-          "CWE-352",
-          "CWE-79"
-        ],
-        "precision": 0.5,
-        "recall": 1.0,
-        "f1": 0.667,
-        "semgrep_count": 4,
-        "llm_count": 7,
-        "errors": []
+        "total_findings": 3,
+        "tokens": 0,
+        "time_s": 19.37,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 3,
+        "llm_count": 0,
+        "errors": [
+          "Cartographer: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-00f7a725-bd38-9713-a7f9-7446024a75a7', 'request_id': '00f7a725-bd38-9713-a7f9-7446024a75a7'}",
+          "Inspector: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-407efbd0-53b3-9351-ad6f-483367341c28', 'request_id': '407efbd0-53b3-9351-ad6f-483367341c28'}",
+          "Sentinel: Error code: 403 - {'error': {'message': 'The free quota has been exhausted. To continue accessing the model on a paid basis, please complete your payment information \uff08or disable the \"use free tier only\" mode in the management console if already completed).', 'type': 'AllocationQuota.FreeTierOnly', 'param': None, 'code': 'AllocationQuota.FreeTierOnly'}, 'id': 'chatcmpl-464be63c-07d5-9aee-ae05-ff8ac7f1c780', 'request_id': '464be63c-07d5-9aee-ae05-ff8ac7f1c780'}"
+        ]
       }
     ]
   }

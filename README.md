@@ -109,7 +109,9 @@ Inside `./synod chat`:
 - **Quality samples**: semgrep contributes no findings and introduces no false positives.
 - **Cost/latency**: token usage is essentially unchanged (+1.5% security avg); wall time increases by ~1s per sample because of the semgrep scan overhead. Semgrep reduces LLM token discovery load, but Sentinel still runs its full pass.
 
-**Conclusion:** the Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for classes like path traversal and command injection. It does not help CSRF, which remains a known weakness. The xss_app precision regression has been addressed in code; final numbers will be confirmed once API quota is available.
+**Conclusion:** the Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for classes like path traversal and command injection. It does not help CSRF, which remains a known weakness. The xss_app precision regression has been addressed in code.
+
+> **Note on re-verification:** the table above reflects the last complete benchmark run using `qwen3-coder-plus-2025-07-22`. A subsequent attempt to re-run the full suite with `qwen3.7-max-2026-05-20` failed — that model returns `None` for Inspector/Sentinel structured-JSON prompts, making it incompatible with the multi-agent council. During that run the DashScope free quota was also exhausted, so the Semgrep+LLM condition degenerated to Semgrep-only. Final re-verification of the xss_app fix is pending a working model and available quota.
 
 ## API Reference
 
