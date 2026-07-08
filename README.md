@@ -220,7 +220,9 @@ If a PR changes more than `GITHUB_MAX_FILES_PER_PR` files (default 10), Synod po
 
 ### Example PR comment
 
-Screenshot not available — see the live PR comment at [02NIN20/Synod#1](https://github.com/02NIN20/Synod/pull/1) for an example of the format.
+<p align="center">
+  <img src="docs/github_pr_comment.png" alt="Example Synod PR comment" width="700">
+</p>
 
 ## Tech Stack
 
