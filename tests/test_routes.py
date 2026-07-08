@@ -117,7 +117,7 @@ def test_chat_text_route(client, mock_llm):
     assert data["reply"] == "Hello from LLM"
 
 
-def test_chat_empty_message(client):
+def test_chat_empty_message(client, mock_llm):
     resp = client.post("/api/v1/chat", json={
         "message": "",
         "history": [],

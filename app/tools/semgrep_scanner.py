@@ -48,6 +48,19 @@ def _severity(rule_severity: str) -> str:
     return SEVERITY_MAP.get(rule_severity.upper(), "medium")
 
 
+def _extract_cwe(rule_id: str, metadata: dict) -> str:
+    """Return a CWE-XXX id from our map or from Semgrep metadata."""
+    if rule_id in CWE_MAP:
+        return CWE_MAP[rule_id]
+    meta_cwe = metadata.get("cwe", [])
+    if isinstance(meta_cwe, list) and meta_cwe:
+        # e.g. "CWE-79: Improper Neutralization..."
+        first = meta_cwe[0]
+        if first.startswith("CWE-"):
+            return first.split(":")[0].strip()
+    return ""
+
+
 def _find_semgrep_cmd() -> list[str]:
     """Return the best available semgrep invocation.
 
@@ -64,8 +77,49 @@ def _find_semgrep_cmd() -> list[str]:
     return [sys.executable, "-m", "semgrep"]
 
 
+def _dedup_raw_findings(findings: list[dict[str, Any]], line_tolerance: int = 2) -> list[dict[str, Any]]:
+    """Collapse duplicate semgrep hits on the same vulnerability cluster.
+
+    Registry rules often overlap (e.g. Flask SSTI + raw-html-format for the
+    same vulnerable expression, or the definition line vs the render call).
+    Keep one representative hit per (CWE, nearby-line) cluster. Prefer
+    findings that map to a known CWE and have higher severity.
+    """
+    def _cwe(f: dict[str, Any]) -> str:
+        return CWE_MAP.get(f.get("rule_id", ""), "")
+
+    # Sort by line so clustering is deterministic.
+    sorted_findings = sorted(findings, key=lambda f: f.get("line", 0))
+    clusters: list[list[dict[str, Any]]] = []
+    for f in sorted_findings:
+        line = f.get("line", 0)
+        placed = False
+        for cluster in clusters:
+            # Same CWE or both missing CWE, and within line tolerance.
+            cluster_cwe = _cwe(cluster[0])
+            if (_cwe(f) == cluster_cwe or (not _cwe(f) and not cluster_cwe)) and \
+               abs(line - cluster[0].get("line", 0)) <= line_tolerance:
+                cluster.append(f)
+                placed = True
+                break
+        if not placed:
+            clusters.append([f])
+
+    result = []
+    for cluster in clusters:
+        # Pick representative: prefer known CWE, then high severity, then first.
+        representative = cluster[0]
+        for f in cluster:
+            if _cwe(f) and not _cwe(representative):
+                representative = f
+            elif f.get("severity", "") == "high" and representative.get("severity") != "high":
+                representative = f
+        result.append(representative)
+    return result
+
+
 def run_semgrep(code: str, filename: str, timeout: int = 60) -> list[dict[str, Any]]:
-    """Run semgrep on `code` and return a list of raw findings.
+    """Run semgrep on `code` and return a deduplicated list of raw findings.
 
     Returns empty list on any failure so the pipeline never breaks.
     """
@@ -121,19 +175,22 @@ def run_semgrep(code: str, filename: str, timeout: int = 60) -> list[dict[str, A
         logger.warning("semgrep returned invalid JSON")
         return []
 
-    findings = []
+    raw = []
     for r in data.get("results", []):
+        metadata = r.get("extra", {}).get("metadata", {})
         finding = {
             "rule_id": r.get("check_id", "unknown"),
             "line": r.get("start", {}).get("line", 0),
             "message": r.get("extra", {}).get("message", ""),
             "severity": _severity(r.get("extra", {}).get("severity", "WARNING")),
             "path": r.get("path", ""),
-            "metadata": r.get("extra", {}).get("metadata", {}),
+            "metadata": metadata,
+            "cwe": _extract_cwe(r.get("check_id", ""), metadata),
         }
-        findings.append(finding)
+        raw.append(finding)
 
-    logger.info("semgrep found %s findings", len(findings))
+    findings = _dedup_raw_findings(raw)
+    logger.info("semgrep found %s findings (%s after dedup)", len(raw), len(findings))
     return findings
 
 

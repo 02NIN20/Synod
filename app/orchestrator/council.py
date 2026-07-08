@@ -8,8 +8,10 @@ from app.agents.inspector import Inspector
 from app.agents.sentinel import Sentinel
 from app.synthesizer.arbiter import Arbiter
 from app.memory.working_memory import WorkingMemory
-from app.models.schemas import ReviewRequest, ReviewResponse, Finding, Severity, SemgrepFinding
-from app.tools.semgrep_scanner import run_semgrep, findings_to_model
+from app.models.schemas import (
+    ReviewRequest, ReviewResponse, Finding, Severity, SemgrepFinding, FindingSource,
+)
+from app.tools.semgrep_scanner import run_semgrep
 
 logger = logging.getLogger("synod.council")
 MAX_FIX_ITER = 2
@@ -69,11 +71,11 @@ class Council:
             # Fallback: use semgrep findings directly if Sentinel's LLM fails
             sentinel_findings = self.sentinel.findings_from_semgrep(context)
 
-        # Direct semgrep findings are injected alongside Sentinel's output.
-        # Arbiter deduplicates them against LLM findings, preserving the
-        # deterministic semgrep source and high confidence.
-        semgrep_findings = findings_to_model(raw_semgrep)
-        all_findings = inspector_findings + sentinel_findings + semgrep_findings
+        # Tag Sentinel findings that match semgrep candidates so source
+        # tracking stays accurate without bypassing Sentinel's validation.
+        sentinel_findings = self._tag_semgrep_sources(sentinel_findings, raw_semgrep)
+
+        all_findings = inspector_findings + sentinel_findings
 
         if request.enable_fix_loop and all_findings:
             try:
@@ -119,6 +121,24 @@ class Council:
                     f"[Auto-fix not confirmed after {MAX_FIX_ITER} attempts. "
                     f"Manual review required.]"
                 )
+        return findings
+
+    def _tag_semgrep_sources(
+        self, findings: list[Finding], raw_semgrep: list[dict]
+    ) -> list[Finding]:
+        """Mark LLM-validated findings as semgrep-sourced when they match."""
+        for f in findings:
+            if not f.cwe or f.line_number is None:
+                continue
+            for raw in raw_semgrep:
+                raw_cwe = raw.get("cwe", "")
+                if not raw_cwe:
+                    from app.tools.semgrep_scanner import CWE_MAP
+                    raw_cwe = CWE_MAP.get(raw.get("rule_id", ""), "")
+                if raw_cwe == f.cwe and abs(f.line_number - raw.get("line", 0)) <= 2:
+                    f.source = FindingSource.SEMGREP
+                    f.confidence = max(f.confidence, 0.9)
+                    break
         return findings
 
     def _build_summary(self, findings: list[Finding]) -> str:

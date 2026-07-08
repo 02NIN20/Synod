@@ -105,10 +105,11 @@ Inside `./synod chat`:
 - **CWE-22 (path traversal)**: recall already at 1.000 in the LLM-only run; Semgrep+LLM keeps it at 1.000. The deterministic semgrep rule at line 6 provides a floor, but in this stochastic run the LLM also caught it.
 - **CWE-352 (CSRF)**: no improvement from semgrep in this run (0.333±0.471 both). Semgrep's default CSRF rules are pattern-based and miss framework-specific CSRF validation; this class remains LLM-dependent.
 - **CWE-89 / CWE-94 / CWE-798 / CWE-78** (`vulnerable_code.py`): the biggest win. Semgrep's deterministic rules for hardcoded secrets, SQL injection, eval, and command injection raise recall from 0.583 to 0.917 and F1 from 0.730 to 0.952.
+- **CWE-79 (`xss_app.py`)**: precision dropped to 0.667 in the first Semgrep+LLM run because registry rules fired multiple overlapping hits on the same vulnerability (SSTI + raw-html-format on line 10, plus definition-line vs render-call lines). Root cause was direct injection of raw semgrep findings and insufficient dedup. Fixed by: (1) deduping semgrep hits by CWE+line cluster before passing to Sentinel, (2) removing direct semgrep injection so findings only survive if Sentinel validates them, (3) updating Sentinel's prompt to treat semgrep output as unvalidated candidates and drop anything it cannot confirm from the actual code. Re-verification benchmark for `xss_app.py` is pending API quota reset.
 - **Quality samples**: semgrep contributes no findings and introduces no false positives.
 - **Cost/latency**: token usage is essentially unchanged (+1.5% security avg); wall time increases by ~1s per sample because of the semgrep scan overhead. Semgrep reduces LLM token discovery load, but Sentinel still runs its full pass.
 
-**Conclusion:** the Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for classes like path traversal and command injection. It does not help CSRF, which remains a known weakness.
+**Conclusion:** the Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for classes like path traversal and command injection. It does not help CSRF, which remains a known weakness. The xss_app precision regression has been addressed in code; final numbers will be confirmed once API quota is available.
 
 ## API Reference
 
