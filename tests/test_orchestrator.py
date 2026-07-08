@@ -25,6 +25,16 @@ def disable_semgrep():
         yield
 
 
+@pytest.fixture(autouse=True)
+def disable_agent_llm_real_init(llm_client):
+    """Council creates a second QwenClient for JSON agents; return the mock."""
+    def _make_client(*args, **kwargs):
+        return llm_client
+
+    with patch("app.orchestrator.council.QwenClient", side_effect=_make_client) as _:
+        yield
+
+
 SAMPLE_CODE = """import os
 API_KEY = "sk-1234"
 def run(cmd):
@@ -50,7 +60,8 @@ class TestCouncil:
         assert response.session_id is not None
         assert isinstance(UUID(response.session_id), UUID)
         assert response.total_findings >= 0
-        assert response.tokens_used == 42
+        # Two mock clients are used: main LLM + agent LLM.
+        assert response.tokens_used == 84
         assert response.time_seconds >= 0
 
     async def test_review_with_inspector_findings(self, llm_client):

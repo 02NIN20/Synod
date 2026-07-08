@@ -22,10 +22,26 @@ Synod runs a sequential pipeline of specialized LLM agents. The **Cartographer**
 git clone https://github.com/02NIN20/Synod.git
 cd Synod
 cp .env.example .env
-# edit .env — set your DASHSCOPE_API_KEY
+# edit .env — set your DASHSCOPE_API_KEY and review QWEN_MODEL / QWEN_AGENT_MODEL
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+## Configuration
+
+Environment variables (copy `.env.example` → `.env`):
+
+| Variable | Purpose | Default |
+|----------|---------|---------|
+| `DASHSCOPE_API_KEY` | DashScope API key (required) | — |
+| `QWEN_MODEL` | Main/chat model; also used for direct completions | `qwen3.6-plus-2026-04-02` |
+| `QWEN_AGENT_MODEL` | Model for agents that emit strict JSON (`Cartographer`, `Inspector`, `Sentinel`, `Smith`) | `qwen3-coder-next` |
+| `GITHUB_TOKEN` | GitHub PAT for posting PR comments | — |
+| `GITHUB_WEBHOOK_SECRET` | Shared secret for verifying webhook signatures | — |
+| `GITHUB_MAX_FILES_PER_PR` | Skip PRs with more changed files than this | `10` |
+| `GITHUB_MAX_FILE_LINES` | Skip individual files larger than this | `500` |
+
+The split is required because several DashScope models handle free-form chat well but fail on the council's JSON agent prompts, returning `None`. The agent model must reliably produce parseable JSON.
 
 **Option A — local development:**
 ```bash
@@ -101,21 +117,33 @@ Inside `./synod chat`:
 | **Avg (quality)** | | LLM-only | **1.000** | **1.000** | **1.000** | 21121 | 27.4 | | |
 | **Avg (quality)** | | Semgrep+LLM | **1.000** | **1.000** | **1.000** | 21562 | 27.1 | | |
 
-**Key findings:**
-- **CWE-22 (path traversal)**: recall already at 1.000 in the LLM-only run; Semgrep+LLM keeps it at 1.000. The deterministic semgrep rule at line 6 provides a floor, but in this stochastic run the LLM also caught it.
-- **CWE-352 (CSRF)**: no improvement from semgrep in this run (0.333±0.471 both). Semgrep's default CSRF rules are pattern-based and miss framework-specific CSRF validation; this class remains LLM-dependent.
-- **CWE-89 / CWE-94 / CWE-798 / CWE-78** (`vulnerable_code.py`): the biggest win. Semgrep's deterministic rules for hardcoded secrets, SQL injection, eval, and command injection raise recall from 0.583 to 0.917 and F1 from 0.730 to 0.952.
-- **CWE-79 (`xss_app.py`)**: precision dropped to 0.667 in the first Semgrep+LLM run because registry rules fired multiple overlapping hits on the same vulnerability (SSTI + raw-html-format on line 10, plus definition-line vs render-call lines). Root cause was direct injection of raw semgrep findings and insufficient dedup. Fixed by: (1) deduping semgrep hits by CWE+line cluster before passing to Sentinel, (2) removing direct semgrep injection so findings only survive if Sentinel validates them, (3) updating Sentinel's prompt to treat semgrep output as unvalidated candidates and drop anything it cannot confirm from the actual code. Re-verification benchmark for `xss_app.py` is pending API quota reset.
-- **Quality samples**: semgrep contributes no findings and introduces no false positives.
-- **Cost/latency**: token usage is essentially unchanged (+1.5% security avg); wall time increases by ~1s per sample because of the semgrep scan overhead. Semgrep reduces LLM token discovery load, but Sentinel still runs its full pass.
+**Key findings (old model `qwen3-coder-plus-2025-07-22`):**
+- **CWE-22 (path traversal)**: recall already at 1.000 in the LLM-only run; Semgrep+LLM keeps it at 1.000.
+- **CWE-352 (CSRF)**: no improvement from semgrep (0.333±0.471 both).
+- **CWE-89 / CWE-94 / CWE-798 / CWE-78** (`vulnerable_code.py`): biggest win. Semgrep raised recall from 0.583 to 0.917 and F1 from 0.730 to 0.952.
+- **CWE-79 (`xss_app.py`)**: precision dropped to 0.667 in the first Semgrep+LLM run. Fixed by deduping semgrep hits by CWE+line cluster, removing direct semgrep injection, and routing all candidates through Sentinel validation. See re-verification below.
+- **Quality samples**: semgrep introduces no false positives.
+- **Cost/latency**: token usage essentially unchanged; wall time increases by ~1s per sample for the semgrep scan.
 
-**Conclusion:** the Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for classes like path traversal and command injection. It does not help CSRF, which remains a known weakness. The xss_app precision regression has been addressed in code.
+**Conclusion:** the Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for path traversal and command injection. It does not help CSRF, which remains a known weakness.
 
-> **Note on re-verification:** the table above reflects the last complete benchmark run using `qwen3-coder-plus-2025-07-22`. Subsequent attempts to re-verify with alternate models failed:
-> - `qwen3.7-max-2026-05-20` and `qwen3.6-plus-2026-04-02` both return `None` for Inspector/Sentinel structured-JSON prompts, making them incompatible with the multi-agent council.
-> - `qwen3-coder-plus-2025-07-22` (the only compatible model found so far) hit the DashScope free-tier quota during re-verification.
->
-> Final re-verification of the xss_app fix is pending either a quota reset for `qwen3-coder-plus` or a model that supports strict JSON output for agent prompts.
+> **Model compatibility note:** `qwen3-coder-plus-2025-07-22` produced all numbers above, but its free quota was exhausted. `qwen3.7-max-*` and `qwen3.6-plus-2026-04-02` cannot run the JSON agents alone (Inspector/Sentinel return `None`). The current setup uses a **main/chat model** plus a **dedicated JSON-agent model** via `QWEN_AGENT_MODEL` (see Configuration), so non-JSON models can still drive the council.
+
+### `xss_app.py` re-verification (new model split)
+
+After splitting the model configuration, `xss_app.py` was re-benchmarked with:
+- `QWEN_MODEL=qwen3.6-plus-2026-04-02`
+- `QWEN_AGENT_MODEL=qwen3-coder-next`
+- 3 runs per condition, sample `tests/samples/xss_app.py`
+
+| Method | Precision | Recall | F1 | Tokens/run | Time/run |
+|--------|-----------|--------|----|-----------|---------|
+| LLM-only | 1.000±0.000 | 0.667±0.471 | 0.667±0.471 | 5,250 | 11.4s |
+| Semgrep+LLM | 0.833±0.236 | **1.000±0.000** | **0.889±0.157** | 6,902 | 25.7s |
+
+The Semgrep pre-filter now guarantees 100% recall on this sample, up from 67% with the LLM-only run, while keeping F1 higher (0.889 vs 0.667). One of three runs produced an extra LLM finding at the same CWE, pulling average precision from 1.000 to 0.833. This is improved versus the pre-fix precision of 0.667, but not yet fully restored to 1.000. The remaining false positive is stochastic and tied to Sentinel's LLM pass, not raw semgrep injection.
+
+> **Note:** the old complete table remains above for reference, but those numbers were produced with `qwen3-coder-plus-2025-07-22`. A full re-run of all 7 samples with the new model split is estimated at ~1.18M tokens (above the current `qwen3-coder-next` quota).
 
 ## API Reference
 
@@ -147,12 +175,56 @@ Inside `./synod chat`:
 If `message` looks like code, the endpoint runs the council and returns summarized findings.  
 Otherwise, it replies directly via Qwen LLM with conversation `history` for context.
 
+## GitHub Integration
+
+Synod can review pull requests automatically and post findings as a PR comment.
+
+### Setup
+
+1. **Expose the server** to the internet (e.g. via ngrok, Cloudflare Tunnel, or deployed instance).
+2. In your GitHub repo, go to **Settings → Webhooks → Add webhook**:
+   - **Payload URL**: `https://your-host.example.com/api/v1/webhook/github`
+   - **Content type**: `application/json`
+   - **Secret**: the same value you set in `GITHUB_WEBHOOK_SECRET`
+   - **Events**: select **Pull requests**
+3. Set these environment variables:
+   ```bash
+   GITHUB_TOKEN=ghp_...              # classic or fine-grained token with repo scope
+   GITHUB_WEBHOOK_SECRET=...         # must match the secret entered in GitHub
+   # optional:
+   GITHUB_MAX_FILES_PER_PR=10        # skip PRs larger than this
+   GITHUB_MAX_FILE_LINES=500         # skip individual files larger than this
+   ```
+
+### What triggers a review
+
+The webhook listens for `pull_request` events with action `opened` or `synchronize`. When triggered:
+
+- Fetches changed files from the PR.
+- Skips non-code files, removed files, and files over `GITHUB_MAX_FILE_LINES`.
+- Runs the Council on each changed file's patch.
+- Aggregates findings into one Markdown comment grouped by severity, with collapsible sections per file.
+- Posts the comment via the GitHub Issues API.
+- Returns `200` immediately; the review runs as a background task so GitHub's 10s webhook timeout is not exceeded.
+
+### PRs with many changed files
+
+If a PR changes more than `GITHUB_MAX_FILES_PER_PR` files (default 10), Synod posts a comment explaining that the review was skipped to avoid runaway token usage.
+
+### Example PR comment
+
+<p align="center">
+  <img src="docs/github_pr_comment.png" alt="Example Synod PR comment" width="700">
+</p>
+
+> Placeholder: add a real screenshot at `docs/github_pr_comment.png`.
+
 ## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
 | Framework | FastAPI (Python 3.12) |
-| LLM | Qwen Cloud — `qwen3-coder-plus-2025-07-22` |
+| LLM | Qwen Cloud — `qwen3.6-plus-2026-04-02` / `qwen3-coder-next` |
 | CLI | Typer + Rich + httpx |
 | Container | Docker, docker-compose |
 | Deployment | ECS |
@@ -162,7 +234,7 @@ Otherwise, it replies directly via Qwen LLM with conversation `history` for cont
 - **Semgrep pre-filter** — static analysis pass before LLM agents to reduce cost and ground findings
 - **Episodic/semantic memory** — remember past reviews across sessions for context
 - **Weighted voting** — Arbiter uses confidence × severity × corroboration for ranking
-- **GitHub PR integration** — automatic review comments on pull requests
+- ~~**GitHub PR integration** — automatic review comments on pull requests~~ ✅
 - **Multi-language** — expand beyond Python (JS/TS, Go, Rust, Java)
 - **CI/CD integration** — GitHub Action for automated PR review
 

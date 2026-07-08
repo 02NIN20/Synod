@@ -12,6 +12,8 @@ from app.models.schemas import (
     ReviewRequest, ReviewResponse, Finding, Severity, SemgrepFinding, FindingSource,
 )
 from app.tools.semgrep_scanner import run_semgrep
+from app.config import QWEN_AGENT_MODEL
+from app.llm.qwen_client import QwenClient
 
 logger = logging.getLogger("synod.council")
 MAX_FIX_ITER = 2
@@ -20,9 +22,17 @@ MAX_FIX_ITER = 2
 class Council:
     def __init__(self, llm_client):
         self.llm = llm_client
-        self.cartographer = Cartographer(llm_client)
-        self.inspector = Inspector(llm_client)
-        self.sentinel = Sentinel(llm_client)
+        # Agents that require strict JSON output use a dedicated model
+        # (e.g. qwen3-coder-plus or qwen3-coder-next) when the main model
+        # does not reliably follow structured-output prompts.
+        self.agent_llm = (
+            llm_client
+            if QWEN_AGENT_MODEL == llm_client.model
+            else QwenClient(model=QWEN_AGENT_MODEL)
+        )
+        self.cartographer = Cartographer(self.agent_llm)
+        self.inspector = Inspector(self.agent_llm)
+        self.sentinel = Sentinel(self.agent_llm)
         self.arbiter = Arbiter(llm_client)
         self.memory = WorkingMemory()
 
@@ -89,19 +99,20 @@ class Council:
         summary = self._build_summary(final_findings)
         elapsed = time.time() - start
 
+        total_tokens = self.llm.tokens_used + self.agent_llm.tokens_used
         return ReviewResponse(
             session_id=session_id,
             findings=final_findings,
             summary=summary,
             total_findings=len(final_findings),
-            tokens_used=self.llm.tokens_used,
+            tokens_used=total_tokens,
             time_seconds=round(elapsed, 2),
             errors=errors,
         )
 
     async def _fix_loop(self, findings: list[Finding], code: str) -> list[Finding]:
         from app.agents.smith import Smith
-        smith = Smith(self.llm)
+        smith = Smith(self.agent_llm)
 
         high_severity = [f for f in findings if f.impact in (Severity.HIGH, Severity.CRITICAL)]
         for finding in high_severity:

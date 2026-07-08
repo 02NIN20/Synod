@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from app.llm.qwen_client import QwenClient
 from app.orchestrator.council import Council
 from app.models.schemas import ReviewRequest, FindingSource
-import app.tools.semgrep_scanner as semgrep_mod
+import app.orchestrator.council as council_mod
 
 SAMPLES_DIR = os.path.join(os.path.dirname(__file__), "..", "tests", "samples")
 
@@ -151,11 +151,13 @@ async def run_condition(
     print(f"{'='*60}")
 
     # Toggle semgrep globally via monkey-patch for LLM-only condition.
-    original_run_semgrep = semgrep_mod.run_semgrep
+    # Patch the import inside the council module, not the source module,
+    # because Council uses `from app.tools.semgrep_scanner import run_semgrep`.
+    original_run_semgrep = council_mod.run_semgrep
     if condition == "LLM-only":
-        semgrep_mod.run_semgrep = lambda code, filename: []
+        council_mod.run_semgrep = lambda code, filename: []
     else:
-        semgrep_mod.run_semgrep = original_run_semgrep
+        council_mod.run_semgrep = original_run_semgrep
 
     llm = QwenClient(model=model)
     council = Council(llm)
@@ -217,7 +219,7 @@ async def run_condition(
         results[filename] = runs
 
     # Restore original semgrep function
-    semgrep_mod.run_semgrep = original_run_semgrep
+    council_mod.run_semgrep = original_run_semgrep
     print(f"\n  Subtotal: {total_tokens} tokens, {total_time:.1f}s")
     return results
 
