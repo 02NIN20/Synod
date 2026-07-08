@@ -16,6 +16,12 @@ Multi-agent code review council, powered by Qwen LLM.
 
 Synod runs a sequential pipeline of specialized LLM agents. The **Cartographer** first maps the code's structure (modules, dependencies, entry points), then **Inspector** (code quality) and **Sentinel** (security, CWE-mapped) analyze in parallel. **Arbiter** deduplicates and validates findings by consensus. Optionally, **Smith** generates fixes validated by Sentinel in a retry loop.
 
+## Why a Council, Not a Single LLM Call
+
+A single LLM call for code review is N parallel agents that never talk to each other. In Synod, **Cartographer's output is not concatenated — it is consumed** by Inspector and Sentinel, creating a real dependency chain where downstream agents know what structure they are analyzing. **Arbiter validates every finding's line number against the actual source file** before it survives to output, acting as a hallucination guard that a bare prompt cannot provide. **Smith's fixes are re-validated by Sentinel in a bounded retry loop** (max 2 iterations), so bad fixes are caught and discarded rather than accepted blind. These are structural guarantees, not prompt engineering.
+
+<!-- TODO: Add single-agent vs Synod benchmark (precision/recall/F1/tokens side-by-side) before final submission. No such comparison has been run yet. -->
+
 ## Quickstart
 
 ```bash
@@ -96,6 +102,22 @@ Inside `./synod chat`:
 **FP**: finding with no ground-truth match.  
 **FN**: ground-truth bug with no finding.
 
+**Current model split:** `QWEN_MODEL=qwen3.6-plus-2026-04-02` (main/chat) + `QWEN_AGENT_MODEL=qwen3-coder-next` (JSON agents). This split was necessary because bare `qwen3.6-plus-2026-04-02` and `qwen3.7-max-*` return `None` for Inspector/Sentinel structured-JSON prompts, while `qwen3-coder-plus-2025-07-22` had its free quota exhausted. The agent model must reliably produce parseable JSON.
+
+### `xss_app.py` re-verification (most recent result)
+
+Re-benchmarked with the new model split — 3 runs per condition on `tests/samples/xss_app.py`:
+
+| Method | Precision | Recall | F1 | Tokens/run | Time/run |
+|--------|-----------|--------|----|-----------|---------|
+| LLM-only | 1.000±0.000 | 0.667±0.471 | 0.667±0.471 | 5,250 | 11.4s |
+| Semgrep+LLM | 0.833±0.236 | **1.000±0.000** | **0.889±0.157** | 6,902 | 25.7s |
+
+The Semgrep pre-filter guarantees 100% recall on this sample (up from 67% LLM-only). One of three runs produced a stochastic extra LLM finding at the same CWE, pulling average precision to 0.833. This is improved versus the pre-fix precision of 0.667 (before dedup and Sentinel validation were added), but one false positive remains tied to Sentinel's LLM pass.
+
+<details>
+<summary>Full benchmark history (`qwen3-coder-plus-2025-07-22`)</summary>
+
 | Sample | Category | Method | Precision | Recall | F1 | Tokens | Time(s) | Semgrep | LLM |
 |--------|----------|--------|-----------|--------|----|--------|---------|---------|-----|
 | vulnerable_code.py | security | LLM-only | 1.000±0.000 | 0.583±0.118 | 0.730±0.090 | 47663 | 31.1 | 0.0 | 8.7 |
@@ -117,33 +139,17 @@ Inside `./synod chat`:
 | **Avg (quality)** | | LLM-only | **1.000** | **1.000** | **1.000** | 21121 | 27.4 | | |
 | **Avg (quality)** | | Semgrep+LLM | **1.000** | **1.000** | **1.000** | 21562 | 27.1 | | |
 
-**Key findings (old model `qwen3-coder-plus-2025-07-22`):**
+**Key findings:**
 - **CWE-22 (path traversal)**: recall already at 1.000 in the LLM-only run; Semgrep+LLM keeps it at 1.000.
 - **CWE-352 (CSRF)**: no improvement from semgrep (0.333±0.471 both).
 - **CWE-89 / CWE-94 / CWE-798 / CWE-78** (`vulnerable_code.py`): biggest win. Semgrep raised recall from 0.583 to 0.917 and F1 from 0.730 to 0.952.
-- **CWE-79 (`xss_app.py`)**: precision dropped to 0.667 in the first Semgrep+LLM run. Fixed by deduping semgrep hits by CWE+line cluster, removing direct semgrep injection, and routing all candidates through Sentinel validation. See re-verification below.
+- **CWE-79 (`xss_app.py`)**: precision dropped to 0.667 in the first Semgrep+LLM run due to overlapping registry-rule hits and raw semgrep findings bypassing Sentinel validation. Fixed by deduping semgrep hits by CWE+line cluster, removing direct injection, and routing all candidates through Sentinel.
 - **Quality samples**: semgrep introduces no false positives.
 - **Cost/latency**: token usage essentially unchanged; wall time increases by ~1s per sample for the semgrep scan.
 
-**Conclusion:** the Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for path traversal and command injection. It does not help CSRF, which remains a known weakness.
+</details>
 
-> **Model compatibility note:** `qwen3-coder-plus-2025-07-22` produced all numbers above, but its free quota was exhausted. `qwen3.7-max-*` and `qwen3.6-plus-2026-04-02` cannot run the JSON agents alone (Inspector/Sentinel return `None`). The current setup uses a **main/chat model** plus a **dedicated JSON-agent model** via `QWEN_AGENT_MODEL` (see Configuration), so non-JSON models can still drive the council.
-
-### `xss_app.py` re-verification (new model split)
-
-After splitting the model configuration, `xss_app.py` was re-benchmarked with:
-- `QWEN_MODEL=qwen3.6-plus-2026-04-02`
-- `QWEN_AGENT_MODEL=qwen3-coder-next`
-- 3 runs per condition, sample `tests/samples/xss_app.py`
-
-| Method | Precision | Recall | F1 | Tokens/run | Time/run |
-|--------|-----------|--------|----|-----------|---------|
-| LLM-only | 1.000±0.000 | 0.667±0.471 | 0.667±0.471 | 5,250 | 11.4s |
-| Semgrep+LLM | 0.833±0.236 | **1.000±0.000** | **0.889±0.157** | 6,902 | 25.7s |
-
-The Semgrep pre-filter now guarantees 100% recall on this sample, up from 67% with the LLM-only run, while keeping F1 higher (0.889 vs 0.667). One of three runs produced an extra LLM finding at the same CWE, pulling average precision from 1.000 to 0.833. This is improved versus the pre-fix precision of 0.667, but not yet fully restored to 1.000. The remaining false positive is stochastic and tied to Sentinel's LLM pass, not raw semgrep injection.
-
-> **Note:** the old complete table remains above for reference, but those numbers were produced with `qwen3-coder-plus-2025-07-22`. A full re-run of all 7 samples with the new model split is estimated at ~1.18M tokens (above the current `qwen3-coder-next` quota).
+**Conclusion:** The Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for path traversal and command injection. It does not help CSRF, which remains a known weakness. On `xss_app.py`, Semgrep+LLM now guarantees 100% recall, though one stochastic false positive from Sentinel's LLM pass prevents full precision recovery. Quality samples show no impact from semgrep.
 
 ## API Reference
 
@@ -151,6 +157,7 @@ The Semgrep pre-filter now guarantees 100% recall on this sample, up from 67% wi
 |----------|--------|-------------|
 | `/api/v1/review` | POST | Full council code review |
 | `/api/v1/chat` | POST | Chat with intent routing (code → council, text → LLM) |
+| `/api/v1/webhook/github` | POST | GitHub pull request webhook |
 | `/health` | GET | Health check |
 
 ### `/api/v1/review`
@@ -213,11 +220,7 @@ If a PR changes more than `GITHUB_MAX_FILES_PER_PR` files (default 10), Synod po
 
 ### Example PR comment
 
-<p align="center">
-  <img src="docs/github_pr_comment.png" alt="Example Synod PR comment" width="700">
-</p>
-
-> Placeholder: add a real screenshot at `docs/github_pr_comment.png`.
+Screenshot not available — see the live PR comment at [02NIN20/Synod#1](https://github.com/02NIN20/Synod/pull/1) for an example of the format.
 
 ## Tech Stack
 
@@ -229,12 +232,16 @@ If a PR changes more than `GITHUB_MAX_FILES_PER_PR` files (default 10), Synod po
 | Container | Docker, docker-compose |
 | Deployment | ECS |
 
+## ✅ Completed
+
+- **GitHub PR integration** — automatic review comments on pull requests via webhook
+- **Semgrep pre-filter** — static analysis pass before LLM agents to reduce cost and ground findings
+- **CLI** — review, chat, scan commands with Rich output
+
 ## Roadmap
 
-- **Semgrep pre-filter** — static analysis pass before LLM agents to reduce cost and ground findings
 - **Episodic/semantic memory** — remember past reviews across sessions for context
 - **Weighted voting** — Arbiter uses confidence × severity × corroboration for ranking
-- ~~**GitHub PR integration** — automatic review comments on pull requests~~ ✅
 - **Multi-language** — expand beyond Python (JS/TS, Go, Rust, Java)
 - **CI/CD integration** — GitHub Action for automated PR review
 
