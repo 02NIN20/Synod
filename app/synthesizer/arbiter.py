@@ -28,6 +28,13 @@ class Arbiter:
             if match:
                 if f.agent not in match.corroborated_by:
                     match.corroborated_by.append(f.agent)
+                # Semgrep-sourced findings are deterministic: keep their
+                # evidence when merging, and raise confidence.
+                if f.source == "semgrep":
+                    match.source = f.source
+                    match.confidence = max(match.confidence, f.confidence)
+                    if f.line_number is not None:
+                        match.line_number = f.line_number
             else:
                 result.append(f)
         return result
@@ -51,4 +58,8 @@ class Arbiter:
                 idx = severity_order.index(f.impact)
                 f.impact = severity_order[min(idx + 1, len(severity_order) - 1)]
                 f.confidence = min(1.0, f.confidence + 0.2 * len(f.corroborated_by))
+            # Semgrep findings are deterministic tool output: floor confidence
+            # high and ensure they are not downgraded by consensus logic.
+            if f.source == "semgrep":
+                f.confidence = max(f.confidence, 0.9)
         return findings

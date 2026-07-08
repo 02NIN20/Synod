@@ -8,7 +8,8 @@ from app.agents.inspector import Inspector
 from app.agents.sentinel import Sentinel
 from app.synthesizer.arbiter import Arbiter
 from app.memory.working_memory import WorkingMemory
-from app.models.schemas import ReviewRequest, ReviewResponse, Finding, Severity
+from app.models.schemas import ReviewRequest, ReviewResponse, Finding, Severity, SemgrepFinding
+from app.tools.semgrep_scanner import run_semgrep, findings_to_model
 
 logger = logging.getLogger("synod.council")
 MAX_FIX_ITER = 2
@@ -35,6 +36,20 @@ class Council:
             logger.warning("Cartographer failed: %s", e)
             errors.append(f"Cartographer: {e}")
             context = None
+
+        # Semgrep pre-filter: runs after Cartographer, before Sentinel.
+        # Graceful fallback to empty list if semgrep is unavailable.
+        try:
+            raw_semgrep = run_semgrep(request.code, request.filename or "snippet.py")
+        except Exception as e:
+            logger.warning("Semgrep pre-filter failed: %s", e)
+            errors.append(f"Semgrep: {e}")
+            raw_semgrep = []
+
+        if context is None:
+            from app.models.schemas import StructureContext
+            context = StructureContext()
+        context.semgrep_findings = [SemgrepFinding(**r) for r in raw_semgrep]
         self.memory.set(session_id, "context", context)
 
         inspector_findings = []
@@ -51,8 +66,14 @@ class Council:
         except Exception as e:
             logger.warning("Sentinel failed: %s", e)
             errors.append(f"Sentinel: {e}")
+            # Fallback: use semgrep findings directly if Sentinel's LLM fails
+            sentinel_findings = self.sentinel.findings_from_semgrep(context)
 
-        all_findings = inspector_findings + sentinel_findings
+        # Direct semgrep findings are injected alongside Sentinel's output.
+        # Arbiter deduplicates them against LLM findings, preserving the
+        # deterministic semgrep source and high confidence.
+        semgrep_findings = findings_to_model(raw_semgrep)
+        all_findings = inspector_findings + sentinel_findings + semgrep_findings
 
         if request.enable_fix_loop and all_findings:
             try:

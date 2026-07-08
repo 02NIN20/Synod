@@ -17,6 +17,12 @@ class AgentRole(str, Enum):
     INSPECTOR = "inspector"
     SENTINEL = "sentinel"
     SMITH = "smith"
+    SEMGREP = "semgrep"
+
+
+class FindingSource(str, Enum):
+    LLM = "llm"
+    SEMGREP = "semgrep"
 
 
 class Finding(BaseModel):
@@ -30,6 +36,7 @@ class Finding(BaseModel):
     cwe: Optional[str] = None
     confidence: float = Field(1.0, ge=0.0, le=1.0)
     corroborated_by: list[AgentRole] = Field(default_factory=list)
+    source: FindingSource = Field(FindingSource.LLM, description="Origin: llm or semgrep")
 
 
 class ReviewRequest(BaseModel):
@@ -49,12 +56,21 @@ class ReviewResponse(BaseModel):
     errors: list[str] = Field(default_factory=list)
 
 
+class SemgrepFinding(BaseModel):
+    rule_id: str
+    line: int
+    message: str
+    severity: str
+    path: str = ""
+
+
 class StructureContext(BaseModel):
     """Output from Cartographer, passed to Inspector and Sentinel."""
     modules: list[str] = Field(default_factory=list)
     dependencies: dict[str, list[str]] = Field(default_factory=dict)
     entry_points: list[str] = Field(default_factory=list)
     notes: str = ""
+    semgrep_findings: list[SemgrepFinding] = Field(default_factory=list)
 
 
 class ChatRequest(BaseModel):

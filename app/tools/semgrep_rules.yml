@@ -1,0 +1,124 @@
+rules:
+  - id: synod.path-traversal-user-input
+    languages: [python]
+    message: Path traversal via user-controlled path
+    severity: ERROR
+    metadata:
+      cwe: "CWE-22"
+    pattern-either:
+      - pattern: open(... + $X, ...)
+      - pattern: open(f"...{$X}...", ...)
+      - pattern: os.path.join(..., $X)
+      - pattern: os.remove(... + $X)
+      - pattern: os.remove(f"...{$X}...")
+      - pattern: |
+          $PATH = ... + $X
+          ...
+          open($PATH, ...)
+      - pattern: |
+          $PATH = f"...{$X}..."
+          ...
+          open($PATH, ...)
+
+  - id: synod.command-injection
+    languages: [python]
+    message: Command injection via user-controlled input
+    severity: ERROR
+    metadata:
+      cwe: "CWE-78"
+    pattern-either:
+      - pattern: os.system($X)
+      - pattern: os.popen($X)
+      - pattern: subprocess.call($X, ...)
+      - pattern: subprocess.run($X, ...)
+      - pattern: subprocess.Popen($X, ...)
+
+  - id: synod.sql-injection
+    languages: [python]
+    message: SQL injection via string formatting
+    severity: ERROR
+    metadata:
+      cwe: "CWE-89"
+    pattern-either:
+      - pattern: |
+          $CURSOR.execute("..." % $X)
+      - pattern: |
+          $CURSOR.execute(f"...{$X}...")
+      - pattern: |
+          $CURSOR.execute("..." + $X)
+      - pattern: |
+          $QUERY = f"...{$X}..."
+          ...
+          $CURSOR.execute($QUERY)
+      - pattern: |
+          $QUERY = "..." % $X
+          ...
+          $CURSOR.execute($QUERY)
+
+  - id: synod.code-injection
+    languages: [python]
+    message: Dangerous code execution
+    severity: ERROR
+    metadata:
+      cwe: "CWE-94"
+    pattern-either:
+      - pattern: eval($X)
+      - pattern: exec($X)
+
+  - id: synod.insecure-deserialization
+    languages: [python]
+    message: Insecure deserialization
+    severity: ERROR
+    metadata:
+      cwe: "CWE-502"
+    pattern-either:
+      - pattern: pickle.loads($X)
+      - pattern: yaml.load($X, ...)
+
+  - id: synod.hardcoded-secret
+    languages: [python]
+    message: Hardcoded credential or secret
+    severity: ERROR
+    metadata:
+      cwe: "CWE-798"
+    pattern-regex: (?i)(password|secret|token|api_key)\s*=\s*["'][^"']+["']
+
+  - id: synod.missing-csrf
+    languages: [python]
+    message: State-changing POST route without explicit CSRF protection
+    severity: WARNING
+    metadata:
+      cwe: "CWE-352"
+    patterns:
+      - pattern: |
+          @$APP.route($ROUTE, methods=["POST"])
+          def $FUNC(...):
+              ...
+      - pattern-not: |
+          @$APP.route($ROUTE, methods=["POST"])
+          def $FUNC(...):
+              ...
+              csrf_protect()
+              ...
+      - pattern-not: |
+          @$APP.route($ROUTE, methods=["POST"])
+          def $FUNC(...):
+              ...
+              csrf_token()
+              ...
+
+  - id: synod.reflected-xss
+    languages: [python]
+    message: Reflected XSS via unescaped user input
+    severity: ERROR
+    metadata:
+      cwe: "CWE-79"
+    pattern-either:
+      - pattern: |
+          render_template_string(f"<...>{$X}...")
+      - pattern: |
+          $T = f"<...>{$X}..."
+          ...
+          render_template_string($T)
+      - pattern: |
+          return f"<...>{$X}..."

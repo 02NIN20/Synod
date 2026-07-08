@@ -18,6 +18,13 @@ def llm_client():
     return client
 
 
+@pytest.fixture(autouse=True)
+def disable_semgrep():
+    """Semgrep is tested separately; keep Council tests deterministic."""
+    with patch("app.orchestrator.council.run_semgrep", return_value=[]) as _:
+        yield
+
+
 SAMPLE_CODE = """import os
 API_KEY = "sk-1234"
 def run(cmd):

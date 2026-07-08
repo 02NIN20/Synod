@@ -1,0 +1,666 @@
+{
+  "LLM-only": {
+    "coupling_sample.py": [
+      {
+        "run": 1,
+        "total_findings": 7,
+        "tokens": 2591,
+        "time_s": 27.01,
+        "found_cwes": [
+          "CWE-89",
+          "CWE-908"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 7,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 7,
+        "tokens": 5605,
+        "time_s": 32.39,
+        "found_cwes": [
+          "CWE-707"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 7,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 6,
+        "tokens": 8245,
+        "time_s": 28.25,
+        "found_cwes": [
+          "CWE-89"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 6,
+        "errors": []
+      }
+    ],
+    "csrf_missing.py": [
+      {
+        "run": 1,
+        "total_findings": 3,
+        "tokens": 10232,
+        "time_s": 22.75,
+        "found_cwes": [
+          "CWE-352"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 1,
+        "llm_count": 2,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 5,
+        "tokens": 12584,
+        "time_s": 29.65,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 1,
+        "llm_count": 4,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 5,
+        "tokens": 14954,
+        "time_s": 29.83,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 1,
+        "llm_count": 4,
+        "errors": []
+      }
+    ],
+    "insecure_deserialize.py": [
+      {
+        "run": 1,
+        "total_findings": 9,
+        "tokens": 17640,
+        "time_s": 27.82,
+        "found_cwes": [
+          "CWE-502"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 3,
+        "llm_count": 6,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 7,
+        "tokens": 20328,
+        "time_s": 27.1,
+        "found_cwes": [
+          "CWE-502"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 3,
+        "llm_count": 4,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 6,
+        "tokens": 22883,
+        "time_s": 23.86,
+        "found_cwes": [
+          "CWE-502"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 3,
+        "llm_count": 3,
+        "errors": []
+      }
+    ],
+    "path_traversal.py": [
+      {
+        "run": 1,
+        "total_findings": 4,
+        "tokens": 25117,
+        "time_s": 31.73,
+        "found_cwes": [
+          "CWE-22"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 1,
+        "llm_count": 3,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 4,
+        "tokens": 27375,
+        "time_s": 27.52,
+        "found_cwes": [
+          "CWE-22"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 1,
+        "llm_count": 3,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 4,
+        "tokens": 29645,
+        "time_s": 28.62,
+        "found_cwes": [
+          "CWE-22"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 1,
+        "llm_count": 3,
+        "errors": []
+      }
+    ],
+    "quality_sample.py": [
+      {
+        "run": 1,
+        "total_findings": 5,
+        "tokens": 33019,
+        "time_s": 22.18,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 5,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 8,
+        "tokens": 36869,
+        "time_s": 30.65,
+        "found_cwes": [
+          "CWE-1044",
+          "CWE-1045",
+          "CWE-1047"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 8,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 5,
+        "tokens": 40397,
+        "time_s": 23.77,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 5,
+        "errors": []
+      }
+    ],
+    "vulnerable_code.py": [
+      {
+        "run": 1,
+        "total_findings": 13,
+        "tokens": 43990,
+        "time_s": 28.05,
+        "found_cwes": [
+          "CWE-78",
+          "CWE-798"
+        ],
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.667,
+        "semgrep_count": 4,
+        "llm_count": 9,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 13,
+        "tokens": 47628,
+        "time_s": 32.2,
+        "found_cwes": [
+          "CWE-78",
+          "CWE-798",
+          "CWE-94"
+        ],
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.857,
+        "semgrep_count": 4,
+        "llm_count": 9,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 12,
+        "tokens": 51372,
+        "time_s": 33.11,
+        "found_cwes": [
+          "CWE-78",
+          "CWE-798"
+        ],
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.667,
+        "semgrep_count": 4,
+        "llm_count": 8,
+        "errors": []
+      }
+    ],
+    "xss_app.py": [
+      {
+        "run": 1,
+        "total_findings": 10,
+        "tokens": 56003,
+        "time_s": 37.07,
+        "found_cwes": [
+          "CWE-79"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 4,
+        "llm_count": 6,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 12,
+        "tokens": 60466,
+        "time_s": 33.58,
+        "found_cwes": [
+          "CWE-79"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 4,
+        "llm_count": 8,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 12,
+        "tokens": 64897,
+        "time_s": 31.28,
+        "found_cwes": [
+          "CWE-79"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 4,
+        "llm_count": 8,
+        "errors": []
+      }
+    ]
+  },
+  "Semgrep+LLM": {
+    "coupling_sample.py": [
+      {
+        "run": 1,
+        "total_findings": 7,
+        "tokens": 2917,
+        "time_s": 31.03,
+        "found_cwes": [
+          "CWE-1046"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 7,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 7,
+        "tokens": 5762,
+        "time_s": 26.9,
+        "found_cwes": [
+          "CWE-639",
+          "CWE-89"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 7,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 5,
+        "tokens": 8247,
+        "time_s": 25.99,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 5,
+        "errors": []
+      }
+    ],
+    "csrf_missing.py": [
+      {
+        "run": 1,
+        "total_findings": 5,
+        "tokens": 10588,
+        "time_s": 28.2,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 1,
+        "llm_count": 4,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 5,
+        "tokens": 12943,
+        "time_s": 31.04,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "semgrep_count": 1,
+        "llm_count": 4,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 3,
+        "tokens": 15054,
+        "time_s": 26.71,
+        "found_cwes": [
+          "CWE-352"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 1,
+        "llm_count": 2,
+        "errors": []
+      }
+    ],
+    "insecure_deserialize.py": [
+      {
+        "run": 1,
+        "total_findings": 9,
+        "tokens": 17797,
+        "time_s": 29.24,
+        "found_cwes": [
+          "CWE-502"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 3,
+        "llm_count": 6,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 8,
+        "tokens": 20426,
+        "time_s": 26.83,
+        "found_cwes": [
+          "CWE-502"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 3,
+        "llm_count": 5,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 8,
+        "tokens": 23222,
+        "time_s": 33.11,
+        "found_cwes": [
+          "CWE-502"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 3,
+        "llm_count": 5,
+        "errors": []
+      }
+    ],
+    "path_traversal.py": [
+      {
+        "run": 1,
+        "total_findings": 4,
+        "tokens": 25474,
+        "time_s": 36.72,
+        "found_cwes": [
+          "CWE-22"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 1,
+        "llm_count": 3,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 5,
+        "tokens": 27854,
+        "time_s": 34.08,
+        "found_cwes": [
+          "CWE-22"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 1,
+        "llm_count": 4,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 4,
+        "tokens": 30073,
+        "time_s": 30.68,
+        "found_cwes": [
+          "CWE-22"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 1,
+        "llm_count": 3,
+        "errors": []
+      }
+    ],
+    "quality_sample.py": [
+      {
+        "run": 1,
+        "total_findings": 8,
+        "tokens": 34050,
+        "time_s": 31.31,
+        "found_cwes": [
+          "CWE-1044",
+          "CWE-1045",
+          "CWE-1047"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 8,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 5,
+        "tokens": 37448,
+        "time_s": 23.57,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 5,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 5,
+        "tokens": 40948,
+        "time_s": 23.59,
+        "found_cwes": [],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 0,
+        "llm_count": 5,
+        "errors": []
+      }
+    ],
+    "vulnerable_code.py": [
+      {
+        "run": 1,
+        "total_findings": 13,
+        "tokens": 44683,
+        "time_s": 30.45,
+        "found_cwes": [
+          "CWE-78",
+          "CWE-798",
+          "CWE-89"
+        ],
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.857,
+        "semgrep_count": 4,
+        "llm_count": 9,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 13,
+        "tokens": 48348,
+        "time_s": 31.5,
+        "found_cwes": [
+          "CWE-78",
+          "CWE-798",
+          "CWE-89",
+          "CWE-94"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 4,
+        "llm_count": 9,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 13,
+        "tokens": 51888,
+        "time_s": 31.06,
+        "found_cwes": [
+          "CWE-78",
+          "CWE-798",
+          "CWE-89",
+          "CWE-94"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 4,
+        "llm_count": 9,
+        "errors": []
+      }
+    ],
+    "xss_app.py": [
+      {
+        "run": 1,
+        "total_findings": 10,
+        "tokens": 56351,
+        "time_s": 28.91,
+        "found_cwes": [
+          "CWE-79"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "semgrep_count": 4,
+        "llm_count": 6,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "total_findings": 11,
+        "tokens": 60910,
+        "time_s": 32.32,
+        "found_cwes": [
+          "CWE-352",
+          "CWE-79"
+        ],
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.667,
+        "semgrep_count": 4,
+        "llm_count": 7,
+        "errors": []
+      },
+      {
+        "run": 3,
+        "total_findings": 11,
+        "tokens": 65595,
+        "time_s": 29.47,
+        "found_cwes": [
+          "CWE-352",
+          "CWE-79"
+        ],
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.667,
+        "semgrep_count": 4,
+        "llm_count": 7,
+        "errors": []
+      }
+    ]
+  }
+}

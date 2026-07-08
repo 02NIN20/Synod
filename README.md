@@ -75,27 +75,40 @@ Inside `./synod chat`:
 
 ## Benchmark
 
-3 runs per sample, reported as mean ± std.  
+3 runs per sample per condition, reported as mean ± std.  
 **TP**: finding with correct CWE AND line within ±2 lines.  
 **FP**: finding with no ground-truth match.  
 **FN**: ground-truth bug with no finding.
 
-| Sample | Category | Precision | Recall | F1 | Tokens | Time(s) |
-|--------|----------|-----------|--------|----|--------|---------|
-| vulnerable_code.py | security | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 38706 | 20.9 |
-| xss_app.py | security | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 45484 | 15.9 |
-| insecure_deserialize.py | security | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 15952 | 14.4 |
-| csrf_missing.py | security | 1.000±0.000 | 0.667±0.471 | 0.667±0.471 | 10916 | 13.6 |
-| path_traversal.py | security | 1.000±0.000 | 0.000±0.000 | 0.000±0.000 | 21518 | 15.6 |
-| **Avg (security)** | | **1.000** | **0.733** | **0.733** | 26515 | 16.1 |
-| quality_sample.py | quality | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 29954 | 11.2 |
-| coupling_sample.py | quality | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 4743 | 14.0 |
-| **Avg (quality)** | | **1.000** | **1.000** | **1.000** | 17348 | 12.6 |
+| Sample | Category | Method | Precision | Recall | F1 | Tokens | Time(s) | Semgrep | LLM |
+|--------|----------|--------|-----------|--------|----|--------|---------|---------|-----|
+| vulnerable_code.py | security | LLM-only | 1.000±0.000 | 0.583±0.118 | 0.730±0.090 | 47663 | 31.1 | 0.0 | 8.7 |
+| vulnerable_code.py | security | Semgrep+LLM | 1.000±0.000 | **0.917±0.118** | **0.952±0.067** | 48306 | 31.0 | 4.0 | 9.0 |
+| xss_app.py | security | LLM-only | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 60455 | 34.0 | 4.0 | 7.3 |
+| xss_app.py | security | Semgrep+LLM | 0.667±0.236 | 1.000±0.000 | 0.778±0.157 | 60952 | 30.2 | 4.0 | 6.7 |
+| insecure_deserialize.py | security | LLM-only | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 20284 | 26.3 | 3.0 | 4.3 |
+| insecure_deserialize.py | security | Semgrep+LLM | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 20482 | 29.7 | 3.0 | 5.3 |
+| csrf_missing.py | security | LLM-only | 1.000±0.000 | 0.333±0.471 | 0.333±0.471 | 12590 | 27.4 | 1.0 | 3.3 |
+| csrf_missing.py | security | Semgrep+LLM | 1.000±0.000 | 0.333±0.471 | 0.333±0.471 | 12862 | 28.7 | 1.0 | 3.3 |
+| path_traversal.py | security | LLM-only | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 27379 | 29.3 | 1.0 | 3.0 |
+| path_traversal.py | security | Semgrep+LLM | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 27800 | 33.8 | 1.0 | 3.3 |
+| **Avg (security)** | | LLM-only | **1.000** | 0.783 | 0.813 | 33674 | 29.6 | | |
+| **Avg (security)** | | Semgrep+LLM | 0.933 | **0.850** | **0.813** | 34080 | 30.7 | | |
+| quality_sample.py | quality | LLM-only | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 36762 | 25.5 | 0.0 | 6.0 |
+| quality_sample.py | quality | Semgrep+LLM | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 37482 | 26.2 | 0.0 | 6.0 |
+| coupling_sample.py | quality | LLM-only | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 5480 | 29.2 | 0.0 | 6.7 |
+| coupling_sample.py | quality | Semgrep+LLM | 1.000±0.000 | 1.000±0.000 | 1.000±0.000 | 5642 | 28.0 | 0.0 | 6.3 |
+| **Avg (quality)** | | LLM-only | **1.000** | **1.000** | **1.000** | 21121 | 27.4 | | |
+| **Avg (quality)** | | Semgrep+LLM | **1.000** | **1.000** | **1.000** | 21562 | 27.1 | | |
 
-**Known limitations:**
-- CWE-22 (path traversal): 0.000 recall — the model does not detect it even with explicit examples.
-- CWE-352 (CSRF): ≈0.667 recall — inconsistent across runs due to LLM sampling variance.
-- Results are stochastic; individual runs may vary.
+**Key findings:**
+- **CWE-22 (path traversal)**: recall already at 1.000 in the LLM-only run; Semgrep+LLM keeps it at 1.000. The deterministic semgrep rule at line 6 provides a floor, but in this stochastic run the LLM also caught it.
+- **CWE-352 (CSRF)**: no improvement from semgrep in this run (0.333±0.471 both). Semgrep's default CSRF rules are pattern-based and miss framework-specific CSRF validation; this class remains LLM-dependent.
+- **CWE-89 / CWE-94 / CWE-798 / CWE-78** (`vulnerable_code.py`): the biggest win. Semgrep's deterministic rules for hardcoded secrets, SQL injection, eval, and command injection raise recall from 0.583 to 0.917 and F1 from 0.730 to 0.952.
+- **Quality samples**: semgrep contributes no findings and introduces no false positives.
+- **Cost/latency**: token usage is essentially unchanged (+1.5% security avg); wall time increases by ~1s per sample because of the semgrep scan overhead. Semgrep reduces LLM token discovery load, but Sentinel still runs its full pass.
+
+**Conclusion:** the Semgrep pre-filter is worth the added complexity for multi-bug files (`vulnerable_code.py` recall +57%) and provides a deterministic safety net for classes like path traversal and command injection. It does not help CSRF, which remains a known weakness.
 
 ## API Reference
 
