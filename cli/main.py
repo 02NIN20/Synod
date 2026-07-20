@@ -19,23 +19,27 @@ def review(
     show_code: bool = typer.Option(False, "--show-code", help="Print the code before review"),
 ):
     """Run a full multi-agent code review against Synod."""
-    if not filepath.exists():
+    resolved = filepath if filepath.is_absolute() else (Path.cwd() / filepath)
+    if not resolved.exists():
+        resolved = Path(__file__).parent.parent / filepath
+    if not resolved.exists():
         console.print(f"[red]File not found: {filepath}[/red]")
         raise typer.Exit(1)
 
-    code = filepath.read_text()
+    code = resolved.read_text()
+    filename = resolved.name
 
     if show_code:
-        print_code(code, filepath.name)
+        print_code(code, filename)
 
-    console.print(f"\n[bold cyan]Synod[/bold cyan] reviewing [bold]{filepath.name}[/bold]...\n")
+    console.print(f"\n[bold cyan]Synod[/bold cyan] reviewing [bold]{filename}[/bold]...\n")
 
     with console.status("[cyan]Running council...[/cyan]", spinner="dots"):
         start = time.time()
         try:
             resp = httpx.post(
                 f"{url}/api/v1/review",
-                json={"code": code, "filename": filepath.name, "enable_fix_loop": fix},
+                json={"code": code, "filename": filename, "enable_fix_loop": fix},
                 timeout=120,
             )
             resp.raise_for_status()
@@ -169,7 +173,9 @@ def _run_review(code: str, filename: str, url: str, history: list[dict] | None =
 def _local_review(arg: str, url: str, history: list[dict] | None = None) -> dict | None:
     path = Path(arg)
     if not path.exists():
-        console.print(f"[red]File not found: {path}[/red]")
+        path = Path(__file__).parent.parent / arg
+    if not path.exists():
+        console.print(f"[red]File not found: {arg}[/red]")
         return None
     return _run_review(path.read_text(), path.name, url, history)
 
