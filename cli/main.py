@@ -8,7 +8,7 @@ from cli.display import console, print_finding, print_summary, print_code
 
 app = typer.Typer(help="Synod - multi-agent code review CLI")
 
-DEFAULT_URL = "http://47.84.69.135:8000"
+DEFAULT_URL = "http://47.245.109.9:8000"
 
 
 @app.command()
